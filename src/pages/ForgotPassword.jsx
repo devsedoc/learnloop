@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { BiArrowBack } from "react-icons/bi"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
 
+import { AuthCard, BackLink, Field, SubmitButton } from "../components/core/Auth/AuthParts"
 import { getPasswordResetToken } from "../services/operations/authAPI"
 
-function ForgotPassword() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("")
   const [emailSent, setEmailSent] = useState(false)
   const dispatch = useDispatch()
@@ -13,58 +12,59 @@ function ForgotPassword() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    dispatch(getPasswordResetToken(email, setEmailSent))
+    if (loading) return
+    dispatch(getPasswordResetToken(email.trim(), setEmailSent))
   }
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-      {loading ? (
-        <div className="spinner"></div>
-      ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
-            {!emailSent ? "Reset your password" : "Check email"}
-          </h1>
-          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
-            {!emailSent
-              ? "Have no fear. We'll email you instructions to reset your password. If you dont have access to your email we can try account recovery"
-              : `We have sent the reset email to ${email}`}
+    <AuthCard
+      title={emailSent ? "Check your email" : "Reset your password"}
+      footer={<BackLink to="/login">Back to log in</BackLink>}
+    >
+      {emailSent ? (
+        <>
+          <p className="mt-3 leading-relaxed text-richblack-50">
+            We sent a link to choose a new password to{" "}
+            <span className="font-bold text-richblack-5">{email}</span>. It can take a few
+            minutes, so check your spam folder too.
           </p>
-          <form onSubmit={handleOnSubmit}>
-            {!emailSent && (
-              <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                  Email Address <sup className="text-pink-200">*</sup>
-                </p>
-                <input
-                  required
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter email address"
-                  className="form-style w-full"
-                />
-              </label>
-            )}
+          <form onSubmit={handleOnSubmit} className="mt-6 flex flex-col gap-3">
+            <SubmitButton loading={loading} loadingText="Sending...">
+              Send the link again
+            </SubmitButton>
             <button
-              type="submit"
-              className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
+              type="button"
+              onClick={() => setEmailSent(false)}
+              className="rounded-lg px-3 py-2 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
             >
-              {!emailSent ? "Sumbit" : "Resend Email"}
+              Use a different email
             </button>
           </form>
-          <div className="mt-6 flex items-center justify-between">
-            <Link to="/login">
-              <p className="flex items-center gap-x-2 text-richblack-5">
-                <BiArrowBack /> Back To Login
-              </p>
-            </Link>
-          </div>
-        </div>
+        </>
+      ) : (
+        <>
+          <p className="mt-3 leading-relaxed text-richblack-50">
+            Enter the email you signed up with and we'll send you a link to choose
+            a new password.
+          </p>
+          <form onSubmit={handleOnSubmit} className="mt-6 flex flex-col gap-5">
+            <Field id="forgot-email" label="Email">
+              <input
+                required
+                id="forgot-email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-style w-full"
+              />
+            </Field>
+            <SubmitButton loading={loading} loadingText="Sending...">
+              Send reset link
+            </SubmitButton>
+          </form>
+        </>
       )}
-    </div>
+    </AuthCard>
   )
 }
-
-export default ForgotPassword

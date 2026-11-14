@@ -62,11 +62,14 @@ export function updateProfile(token, formData) {
         setUser({ ...response.data.updatedUserDetails, image: userImage })
       )
       toast.success("Profile Updated Successfully")
+      toast.dismiss(toastId)
+      return true
     } catch (error) {
       console.log("UPDATE_PROFILE_API API ERROR............", error)
       toast.error("Could Not Update Profile")
     }
     toast.dismiss(toastId)
+    return false
   }
 }
 
@@ -82,11 +85,16 @@ export async function changePassword(token, formData) {
       throw new Error(response.data.message)
     }
     toast.success("Password Changed Successfully")
+    toast.dismiss(toastId)
+    return true
   } catch (error) {
     console.log("CHANGE_PASSWORD_API API ERROR............", error)
-    toast.error(error.response.data.message)
+    toast.error(
+      error.response?.data?.message || "Could not change the password. Try again."
+    )
   }
   toast.dismiss(toastId)
+  return false
 }
 
 export function deleteProfile(token, navigate) {

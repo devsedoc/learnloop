@@ -1,86 +1,79 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
-export default function RequirementsField({
-  name,
-  label,
-  register,
-  setValue,
-  errors,
-  getValues,
-}) {
+export default function RequirementsField({ name, label, register, setValue, errors }) {
   const { editCourse, course } = useSelector((state) => state.course)
   const [requirement, setRequirement] = useState("")
-  const [requirementsList, setRequirementsList] = useState([])
+  const [list, setList] = useState([])
 
   useEffect(() => {
-    if (editCourse) {
-      setRequirementsList(course?.instructions)
-    }
-    register(name, { required: true, validate: (value) => value.length > 0 })
+    if (editCourse) setList(course?.instructions || [])
+    register(name, { validate: (value) => (value && value.length > 0) || false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    setValue(name, requirementsList)
+    setValue(name, list)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requirementsList])
+  }, [list])
 
-  const handleAddRequirement = () => {
-    if (requirement) {
-      setRequirementsList([...requirementsList, requirement])
+  const add = () => {
+    const value = requirement.trim()
+    if (value) {
+      setList([...list, value])
       setRequirement("")
     }
   }
 
-  const handleRemoveRequirement = (index) => {
-    const updatedRequirements = [...requirementsList]
-    updatedRequirements.splice(index, 1)
-    setRequirementsList(updatedRequirements)
-  }
-
   return (
-    <div className="flex flex-col space-y-2">
-      <label className="text-sm text-richblack-5" htmlFor={name}>
-        {label} <sup className="text-pink-200">*</sup>
+    <div className="flex flex-col gap-2">
+      <label className="lable-style" htmlFor={name}>
+        {label}
       </label>
-      <div className="flex flex-col items-start space-y-2">
-        <input
-          type="text"
-          id={name}
-          value={requirement}
-          onChange={(e) => setRequirement(e.target.value)}
-          className="form-style w-full"
-        />
-        <button
-          type="button"
-          onClick={handleAddRequirement}
-          className="font-semibold text-yellow-50"
-        >
-          Add
-        </button>
-      </div>
-      {requirementsList.length > 0 && (
-        <ul className="mt-2 list-inside list-disc">
-          {requirementsList.map((requirement, index) => (
-            <li key={index} className="flex items-center text-richblack-5">
-              <span>{requirement}</span>
+      <p className="-mt-1 text-sm text-richblack-100">
+        What students should know or have before starting, one item at a time.
+      </p>
+      {list.length > 0 && (
+        <ul className="divide-y divide-richblack-700 rounded-lg border border-richblack-700">
+          {list.map((item, index) => (
+            <li key={index} className="flex items-center justify-between gap-3 py-2 pl-4 pr-2">
+              <span className="text-richblack-5">{item}</span>
               <button
                 type="button"
-                className="ml-2 text-xs text-pure-greys-300 "
-                onClick={() => handleRemoveRequirement(index)}
+                className="rounded-md px-3 py-1.5 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+                onClick={() => setList(list.filter((_, i) => i !== index))}
               >
-                clear
+                Remove
               </button>
             </li>
           ))}
         </ul>
       )}
-      {errors[name] && (
-        <span className="ml-2 text-xs tracking-wide text-pink-200">
-          {label} is required
-        </span>
-      )}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          id={name}
+          value={requirement}
+          placeholder="For example, basic JavaScript"
+          onChange={(e) => setRequirement(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault()
+              add()
+            }
+          }}
+          className="form-style min-w-0 flex-1"
+        />
+        <button
+          type="button"
+          onClick={add}
+          disabled={!requirement.trim()}
+          className="shrink-0 rounded-lg border border-richblack-400 px-5 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Add
+        </button>
+      </div>
+      {errors[name] && <p className="form-error">Add at least one requirement.</p>}
     </div>
   )
 }

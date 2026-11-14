@@ -9,20 +9,20 @@ function Dashboard() {
 
   if (profileLoading || authLoading) {
     return (
-      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-        <div className="spinner"></div>
+      <div className="grid min-h-[calc(100vh-4rem)] place-items-center text-richblack-50">
+        Loading your dashboard...
       </div>
     )
   }
 
   return (
-    <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col md:flex-row">
+    <div className="flex min-h-[calc(100vh-4rem)] flex-col md:flex-row">
       <Sidebar />
-      <div className="flex-1 md:h-[calc(100vh-3.5rem)] md:overflow-auto">
-        <div className="mx-auto w-11/12 max-w-[1000px] py-6 md:py-10">
+      <main className="flex-1 md:h-[calc(100vh-4rem)] md:overflow-auto">
+        <div className="mx-auto w-11/12 max-w-[1000px] py-8 md:py-10">
           <Outlet />
         </div>
-      </div>
+      </main>
     </div>
   )
 }

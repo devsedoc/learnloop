@@ -1,119 +1,76 @@
 import { useState } from "react"
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { BiArrowBack } from "react-icons/bi"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
+import {
+  AuthCard,
+  BackLink,
+  Field,
+  PasswordInput,
+  SubmitButton,
+} from "../components/core/Auth/AuthParts"
 import { resetPassword } from "../services/operations/authAPI"
 
-function UpdatePassword() {
+export default function UpdatePassword() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
+  const { id: tokenParam } = useParams()
   const { loading } = useSelector((state) => state.auth)
-  const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
-  })
-
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
+  const [formData, setFormData] = useState({ password: "", confirmPassword: "" })
+  const [error, setError] = useState("")
   const { password, confirmPassword } = formData
 
   const handleOnChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }))
+    setError("")
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    const token = location.pathname.split("/").at(-1)
+    if (loading) return
+    if (password !== confirmPassword) {
+      setError("The two passwords don't match.")
+      return
+    }
+    // The reset token is the last part of the link from the email.
+    const token = tokenParam || window.location.pathname.split("/").at(-1)
     dispatch(resetPassword(password, confirmPassword, token, navigate))
   }
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-      {loading ? (
-        <div className="spinner"></div>
-      ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
-            Choose new password
-          </h1>
-          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
-            Almost done. Enter your new password and youre all set.
-          </p>
-          <form onSubmit={handleOnSubmit}>
-            <label className="relative">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                New Password <sup className="text-pink-200">*</sup>
-              </p>
-              <input
-                required
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={password}
-                onChange={handleOnChange}
-                placeholder="Enter Password"
-                className="form-style w-full !pr-10"
-              />
-              <span
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-            </label>
-            <label className="relative mt-3 block">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                Confirm New Password <sup className="text-pink-200">*</sup>
-              </p>
-              <input
-                required
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={handleOnChange}
-                placeholder="Confirm Password"
-                className="form-style w-full !pr-10"
-              />
-              <span
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showConfirmPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-            </label>
-
-            <button
-              type="submit"
-              className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
-            >
-              Reset Password
-            </button>
-          </form>
-          <div className="mt-6 flex items-center justify-between">
-            <Link to="/login">
-              <p className="flex items-center gap-x-2 text-richblack-5">
-                <BiArrowBack /> Back To Login
-              </p>
-            </Link>
-          </div>
-        </div>
-      )}
-    </div>
+    <AuthCard
+      title="Choose a new password"
+      footer={<BackLink to="/login">Back to log in</BackLink>}
+    >
+      <p className="mt-3 leading-relaxed text-richblack-50">
+        After this you can log in with the new password.
+      </p>
+      <form onSubmit={handleOnSubmit} className="mt-6 flex flex-col gap-5">
+        <Field id="new-password" label="New password">
+          <PasswordInput
+            id="new-password"
+            name="password"
+            value={password}
+            onChange={handleOnChange}
+            autoComplete="new-password"
+            minLength={8}
+          />
+          <p className="text-sm text-richblack-100">At least 8 characters.</p>
+        </Field>
+        <Field id="confirm-password" label="Confirm new password">
+          <PasswordInput
+            id="confirm-password"
+            name="confirmPassword"
+            value={confirmPassword}
+            onChange={handleOnChange}
+            autoComplete="new-password"
+          />
+        </Field>
+        {error && <p className="form-error">{error}</p>}
+        <SubmitButton loading={loading} loadingText="Saving...">
+          Save new password
+        </SubmitButton>
+      </form>
+    </AuthCard>
   )
 }
-
-export default UpdatePassword

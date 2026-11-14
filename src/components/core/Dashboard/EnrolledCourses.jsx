@@ -1,100 +1,103 @@
 import { useEffect, useState } from "react"
-import ProgressBar from "@ramonak/react-progress-bar"
-import { BiDotsVerticalRounded } from "react-icons/bi"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { getUserEnrolledCourses } from "../../../services/operations/profileAPI"
 
+function firstLecturePath(course) {
+  const section = course.courseContent?.[0]
+  const lecture = section?.subSection?.[0]
+  if (!section || !lecture) return null
+  return `/view-course/${course._id}/section/${section._id}/sub-section/${lecture._id}`
+}
+
 export default function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth)
-  const navigate = useNavigate()
-
-  const [enrolledCourses, setEnrolledCourses] = useState(null)
+  // null while loading. On failure the API shows its own toast and returns [].
+  const [courses, setCourses] = useState(null)
 
   useEffect(() => {
     ;(async () => {
-      try {
-        const res = await getUserEnrolledCourses(token) // Getting all the published and the drafted courses
-
-        // Filtering the published course out
-        const filterPublishCourse = res.filter((ele) => ele.status !== "Draft")
-        // console.log(
-        //   "Viewing all the couse that is Published",
-        //   filterPublishCourse
-        // )
-
-        setEnrolledCourses(filterPublishCourse)
-      } catch (error) {
-        console.log("Could not fetch enrolled courses.")
-      }
+      const res = await getUserEnrolledCourses(token)
+      setCourses((res || []).filter((c) => c.status !== "Draft"))
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <>
-      <div className="text-3xl text-richblack-50">Enrolled Courses</div>
-      {!enrolledCourses ? (
-        <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-          <div className="spinner"></div>
+    <div>
+      <h1 className="text-3xl font-extrabold text-richblack-5">Enrolled courses</h1>
+
+      {courses === null ? (
+        <p className="mt-8 text-richblack-50">Loading your courses...</p>
+      ) : courses.length === 0 ? (
+        <div className="mt-8 border-t border-richblack-700 pt-8">
+          <p className="text-lg text-richblack-5">
+            You are not enrolled in any course yet.
+          </p>
+          <Link
+            to="/"
+            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+          >
+            Browse courses
+          </Link>
         </div>
-      ) : !enrolledCourses.length ? (
-        <p className="grid h-[10vh] w-full place-content-center text-richblack-5">
-          You have not enrolled in any course yet.
-          {/* TODO: Modify this Empty State */}
-        </p>
       ) : (
-        <div className="my-8 text-richblack-5">
-          {/* Headings */}
-          <div className="flex rounded-t-lg bg-richblack-500 ">
-            <p className="w-[45%] px-5 py-3">Course Name</p>
-            <p className="w-1/4 px-2 py-3">Duration</p>
-            <p className="flex-1 px-2 py-3">Progress</p>
-          </div>
-          {/* Course Names */}
-          {enrolledCourses.map((course, i, arr) => (
-            <div
-              className={`flex items-center border border-richblack-700 ${
-                i === arr.length - 1 ? "rounded-b-lg" : "rounded-none"
-              }`}
-              key={i}
-            >
-              <div
-                className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
-                onClick={() => {
-                  navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
-                  )
-                }}
+        <ul className="mt-8 border-t border-richblack-700">
+          {courses.map((course) => {
+            const progress = Math.round(course.progressPercentage || 0)
+            const path = firstLecturePath(course)
+            const action =
+              progress === 0 ? "Start" : progress >= 100 ? "Watch again" : "Continue"
+            return (
+              <li
+                key={course._id}
+                className="flex flex-col gap-4 border-b border-richblack-800 py-5 sm:flex-row sm:items-center"
               >
                 <img
                   src={course.thumbnail}
-                  alt="course_img"
-                  className="h-14 w-14 rounded-lg object-cover"
+                  alt=""
+                  className="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
                 />
-                <div className="flex max-w-xs flex-col gap-2">
-                  <p className="font-semibold">{course.courseName}</p>
-                  <p className="text-xs text-richblack-300">
-                    {course.courseDescription.length > 50
-                      ? `${course.courseDescription.slice(0, 50)}...`
-                      : course.courseDescription}
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-richblack-5">{course.courseName}</p>
+                  <p className="mt-1 text-sm text-richblack-100">
+                    {course.totalDuration ? `${course.totalDuration} of video` : "No lectures yet"}
                   </p>
+                  <div className="mt-3 flex items-center gap-3">
+                    <div
+                      className="h-2 flex-1 overflow-hidden rounded-full bg-richblack-700 sm:max-w-xs"
+                      role="progressbar"
+                      aria-valuenow={progress}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${course.courseName} progress`}
+                    >
+                      <div
+                        className="h-full rounded-full bg-yellow-50"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                    <span className="w-12 text-sm text-richblack-50">{progress}%</span>
+                  </div>
                 </div>
-              </div>
-              <div className="w-1/4 px-2 py-3">{course?.totalDuration}</div>
-              <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
-                <p>Progress: {course.progressPercentage || 0}%</p>
-                <ProgressBar
-                  completed={course.progressPercentage || 0}
-                  height="8px"
-                  isLabelVisible={false}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+                {path ? (
+                  <Link
+                    to={path}
+                    className="shrink-0 rounded-lg border border-richblack-400 px-5 py-2.5 text-center font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+                  >
+                    {action}
+                  </Link>
+                ) : (
+                  <span className="shrink-0 text-sm text-richblack-100">
+                    The instructor hasn't added lectures yet.
+                  </span>
+                )}
+              </li>
+            )
+          })}
+        </ul>
       )}
-    </>
+    </div>
   )
 }

@@ -33,7 +33,13 @@ function ReviewSlider() {
     })()
   }, [])
 
-  // console.log(reviews)
+  if (!reviews?.length) {
+    return (
+      <p className="mt-5 text-richblack-50">
+        No reviews yet. They appear here once students rate a course.
+      </p>
+    )
+  }
 
   return (
     <div className="text-white">

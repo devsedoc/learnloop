@@ -1,51 +1,35 @@
-import { FcGoogle } from "react-icons/fc"
-import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
-import frameImg from "../../../assets/Images/frame.png"
+import { AuthCard } from "./AuthParts"
 import LoginForm from "./LoginForm"
 import SignupForm from "./SignupForm"
 
-function Template({ title, description1, description2, image, formType }) {
-  const { loading } = useSelector((state) => state.auth)
-
+// The form stays mounted while a request runs, so a failed login or signup
+// keeps what was typed. The submit button shows the progress instead.
+function Template({ title, description1, description2, formType }) {
+  const isSignup = formType === "signup"
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-      {loading ? (
-        <div className="spinner"></div>
-      ) : (
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col-reverse justify-between gap-y-12 py-12 md:flex-row md:gap-y-0 md:gap-x-12">
-          <div className="mx-auto w-11/12 max-w-[450px] md:mx-0">
-            <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
-              {title}
-            </h1>
-            <p className="mt-4 text-[1.125rem] leading-[1.625rem]">
-              <span className="text-richblack-100">{description1}</span>{" "}
-              <span className="font-edu-sa font-bold italic text-blue-100">
-                {description2}
-              </span>
-            </p>
-            {formType === "signup" ? <SignupForm /> : <LoginForm />}
-          </div>
-          <div className="relative mx-auto w-11/12 max-w-[450px] md:mx-0">
-            <img
-              src={frameImg}
-              alt="Pattern"
-              width={558}
-              height={504}
-              loading="lazy"
-            />
-            <img
-              src={image}
-              alt="Students"
-              width={558}
-              height={504}
-              loading="lazy"
-              className="absolute -top-4 right-4 z-10"
-            />
-          </div>
-        </div>
+    <AuthCard
+      title={title}
+      footer={
+        <p className="text-richblack-50">
+          {isSignup ? "Already have an account? " : "New to Learnloop? "}
+          <Link
+            to={isSignup ? "/login" : "/signup"}
+            className="font-bold text-yellow-50 hover:underline"
+          >
+            {isSignup ? "Log in" : "Create an account"}
+          </Link>
+        </p>
+      }
+    >
+      {(description1 || description2) && (
+        <p className="mt-3 leading-relaxed text-richblack-50">
+          {description1} {description2}
+        </p>
       )}
-    </div>
+      {isSignup ? <SignupForm /> : <LoginForm />}
+    </AuthCard>
   )
 }
 
