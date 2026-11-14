@@ -11,6 +11,7 @@ export default function MyCourses() {
   const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -18,6 +19,7 @@ export default function MyCourses() {
       if (result) {
         setCourses(result)
       }
+      setLoading(false)
     }
     fetchCourses()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,16 +27,20 @@ export default function MyCourses() {
 
   return (
     <div>
-      <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">My Courses</h1>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-extrabold text-richblack-5">My courses</h1>
         <IconBtn
-          text="Add Course"
+          text="New course"
           onclick={() => navigate("/dashboard/add-course")}
         >
           <VscAdd />
         </IconBtn>
       </div>
-      {courses && <CoursesTable courses={courses} setCourses={setCourses} />}
+      {loading ? (
+        <p className="text-richblack-50">Loading your courses...</p>
+      ) : (
+        <CoursesTable courses={courses} setCourses={setCourses} />
+      )}
     </div>
   )
 }

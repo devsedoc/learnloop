@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react"
-import { FiUpload } from "react-icons/fi"
+import { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { updateDisplayPicture } from "../../../../services/operations/SettingsAPI"
 import IconBtn from "../../../Common/IconBtn"
+import SettingsSection from "./SettingsSection"
+
+const MAX_SIZE_MB = 5
 
 export default function ChangeProfilePicture() {
   const { token } = useSelector((state) => state.auth)
@@ -13,88 +15,79 @@ export default function ChangeProfilePicture() {
   const [loading, setLoading] = useState(false)
   const [imageFile, setImageFile] = useState(null)
   const [previewSource, setPreviewSource] = useState(null)
-
+  const [error, setError] = useState("")
   const fileInputRef = useRef(null)
-
-  const handleClick = () => {
-    fileInputRef.current.click()
-  }
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
-    // console.log(file)
-    if (file) {
-      setImageFile(file)
-      previewFile(file)
+    e.target.value = "" // lets the same file be picked again after a cancel
+    if (!file) return
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setError(`That image is over ${MAX_SIZE_MB} MB. Pick a smaller one.`)
+      return
     }
-  }
-
-  const previewFile = (file) => {
+    setError("")
+    setImageFile(file)
     const reader = new FileReader()
+    reader.onloadend = () => setPreviewSource(reader.result)
     reader.readAsDataURL(file)
-    reader.onloadend = () => {
-      setPreviewSource(reader.result)
-    }
   }
 
-  const handleFileUpload = () => {
-    try {
-      console.log("uploading...")
-      setLoading(true)
-      const formData = new FormData()
-      formData.append("displayPicture", imageFile)
-      // console.log("formdata", formData)
-      dispatch(updateDisplayPicture(token, formData)).then(() => {
-        setLoading(false)
-      })
-    } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
-    }
+  const cancel = () => {
+    setImageFile(null)
+    setPreviewSource(null)
+    setError("")
   }
 
-  useEffect(() => {
-    if (imageFile) {
-      previewFile(imageFile)
-    }
-  }, [imageFile])
+  const handleFileUpload = async () => {
+    if (!imageFile || loading) return
+    setLoading(true)
+    const formData = new FormData()
+    formData.append("displayPicture", imageFile)
+    await dispatch(updateDisplayPicture(token, formData))
+    // On success the new photo comes from the user record; on failure the
+    // toast explains it and the old photo shows again.
+    setLoading(false)
+    setImageFile(null)
+    setPreviewSource(null)
+  }
+
   return (
-    <>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
-        <div className="flex items-center gap-x-4">
-          <img
-            src={previewSource || user?.image}
-            alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
-          />
-          <div className="space-y-2">
-            <p>Change Profile Picture</p>
-            <div className="flex flex-row gap-3">
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/png, image/gif, image/jpeg"
-              />
-              <button
-                onClick={handleClick}
-                disabled={loading}
-                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
-              >
-                Select
-              </button>
-              <IconBtn
-                text={loading ? "Uploading..." : "Upload"}
-                onclick={handleFileUpload}
-              >
-                {!loading && (
-                  <FiUpload className="text-lg text-richblack-900" />
-                )}
-              </IconBtn>
-            </div>
+    <SettingsSection
+      title="Profile photo"
+      description={`PNG, JPG or GIF, up to ${MAX_SIZE_MB} MB.`}
+    >
+      <div className="flex flex-wrap items-center gap-5">
+        <img
+          src={previewSource || user?.image}
+          alt=""
+          className="aspect-square w-20 rounded-full object-cover"
+        />
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+          accept="image/png, image/gif, image/jpeg"
+        />
+        {imageFile ? (
+          <div className="flex flex-wrap gap-3">
+            <IconBtn
+              text={loading ? "Saving..." : "Save photo"}
+              onclick={handleFileUpload}
+              disabled={loading}
+            />
+            <IconBtn text="Cancel" outline onclick={cancel} disabled={loading} />
           </div>
-        </div>
+        ) : (
+          <IconBtn
+            text="Choose a photo"
+            outline
+            onclick={() => fileInputRef.current.click()}
+          />
+        )}
       </div>
-    </>
+      {error && <p className="form-error mt-3">{error}</p>}
+    </SettingsSection>
   )
 }

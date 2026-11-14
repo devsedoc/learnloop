@@ -1,60 +1,43 @@
-import React, { useEffect, useState } from "react"
-// Icons
-import { FaRegStar, FaStar } from "react-icons/fa"
-import ReactStars from "react-rating-stars-component"
 import { Link } from "react-router-dom"
 
 import GetAvgRating from "../../../utils/avgRating"
-import RatingStars from "../../Common/RatingStars"
 
-function Course_Card({ course, Height }) {
-  // const avgReviewCount = GetAvgRating(course.ratingAndReviews)
-  // console.log(course.ratingAndReviews)
-  const [avgReviewCount, setAvgReviewCount] = useState(0)
-  useEffect(() => {
-    const count = GetAvgRating(course.ratingAndReviews)
-    setAvgReviewCount(count)
-  }, [course])
-  // console.log("count............", avgReviewCount)
+export const rupees = (n) => (n ? `₹${Number(n).toLocaleString("en-IN")}` : "Free")
 
+export function RatingLine({ reviews }) {
+  const count = reviews?.length || 0
+  if (!count) return <span className="text-richblack-100">No reviews yet</span>
   return (
-    <>
-      <Link to={`/courses/${course._id}`}>
-        <div className="">
-          <div className="rounded-lg">
-            <img
-              src={course?.thumbnail}
-              alt="course thumnail"
-              className={`${Height} w-full rounded-xl object-cover `}
-            />
-          </div>
-          <div className="flex flex-col gap-2 px-1 py-3">
-            <p className="text-xl text-richblack-5">{course?.courseName}</p>
-            <p className="text-sm text-richblack-50">
-              {course?.instructor?.firstName} {course?.instructor?.lastName}
-            </p>
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-5">{avgReviewCount || 0}</span>
-              {/* <ReactStars
-                count={5}
-                value={avgReviewCount || 0}
-                size={20}
-                edit={false}
-                activeColor="#ffd700"
-                emptyIcon={<FaRegStar />}
-                fullIcon={<FaStar />}
-              /> */}
-              <RatingStars Review_Count={avgReviewCount} />
-              <span className="text-richblack-400">
-                {course?.ratingAndReviews?.length} Ratings
-              </span>
-            </div>
-            <p className="text-xl text-richblack-5">Rs. {course?.price}</p>
-          </div>
-        </div>
-      </Link>
-    </>
+    <span className="text-richblack-50">
+      <span className="font-bold text-yellow-50">★ {GetAvgRating(reviews).toFixed(1)}</span>{" "}
+      ({count} {count === 1 ? "review" : "reviews"})
+    </span>
   )
 }
 
-export default Course_Card
+export default function Course_Card({ course }) {
+  return (
+    <Link
+      to={`/courses/${course._id}`}
+      className="group block rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-50"
+    >
+      <img
+        src={course?.thumbnail}
+        alt=""
+        className="aspect-video w-full rounded-lg object-cover"
+      />
+      <div className="mt-3 space-y-1">
+        <p className="font-bold text-richblack-5 group-hover:underline">
+          {course?.courseName}
+        </p>
+        <p className="text-sm text-richblack-100">
+          {course?.instructor?.firstName} {course?.instructor?.lastName}
+        </p>
+        <p className="text-sm">
+          <RatingLine reviews={course?.ratingAndReviews} />
+        </p>
+        <p className="pt-1 font-bold text-richblack-5">{rupees(course?.price)}</p>
+      </div>
+    </Link>
+  )
+}

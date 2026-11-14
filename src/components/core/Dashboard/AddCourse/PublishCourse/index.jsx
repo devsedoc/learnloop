@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -8,95 +7,93 @@ import { resetCourseState, setStep } from "../../../../../slices/courseSlice"
 import { COURSE_STATUS } from "../../../../../utils/constants"
 import IconBtn from "../../../../Common/IconBtn"
 
-export default function PublishCourse() {
-  const { register, handleSubmit, setValue, getValues } = useForm()
+const options = [
+  {
+    value: COURSE_STATUS.DRAFT,
+    title: "Keep as draft",
+    text: "Only you can see it. You can keep editing and publish later.",
+  },
+  {
+    value: COURSE_STATUS.PUBLISHED,
+    title: "Publish",
+    text: "Students can find it in the catalogue and enrol.",
+  },
+]
 
+export default function PublishCourse() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
   const { course } = useSelector((state) => state.course)
+  const [status, setStatus] = useState(course?.status || COURSE_STATUS.DRAFT)
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (course?.status === COURSE_STATUS.PUBLISHED) {
-      setValue("public", true)
-    }
-  }, [])
-
-  const goBack = () => {
-    dispatch(setStep(2))
-  }
 
   const goToCourses = () => {
     dispatch(resetCourseState())
     navigate("/dashboard/my-courses")
   }
 
-  const handleCoursePublish = async () => {
-    // check if form has been updated or not
-    if (
-      (course?.status === COURSE_STATUS.PUBLISHED &&
-        getValues("public") === true) ||
-      (course?.status === COURSE_STATUS.DRAFT && getValues("public") === false)
-    ) {
-      // form has not been updated
-      // no need to make api call
+  const save = async (e) => {
+    e.preventDefault()
+    if (loading) return
+    if (status === course?.status) {
       goToCourses()
       return
     }
     const formData = new FormData()
     formData.append("courseId", course._id)
-    const courseStatus = getValues("public")
-      ? COURSE_STATUS.PUBLISHED
-      : COURSE_STATUS.DRAFT
-    formData.append("status", courseStatus)
+    formData.append("status", status)
     setLoading(true)
     const result = await editCourseDetails(formData, token)
-    if (result) {
-      goToCourses()
-    }
     setLoading(false)
-  }
-
-  const onSubmit = (data) => {
-    // console.log(data)
-    handleCoursePublish()
+    if (result) goToCourses()
   }
 
   return (
-    <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-      <p className="text-2xl font-semibold text-richblack-5">
-        Publish Settings
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Checkbox */}
-        <div className="my-6 mb-8">
-          <label htmlFor="public" className="inline-flex items-center text-lg">
-            <input
-              type="checkbox"
-              id="public"
-              {...register("public")}
-              className="border-gray-300 h-4 w-4 rounded bg-richblack-500 text-richblack-400 focus:ring-2 focus:ring-richblack-5"
-            />
-            <span className="ml-2 text-richblack-400">
-              Make this course as public
-            </span>
-          </label>
+    <form onSubmit={save} className="space-y-6">
+      <fieldset>
+        <legend className="lable-style">Who can see "{course?.courseName}"?</legend>
+        <div className="mt-3 space-y-3">
+          {options.map((o) => (
+            <label
+              key={o.value}
+              className={`flex cursor-pointer gap-3 rounded-lg border p-4 transition-colors duration-150 ${
+                status === o.value
+                  ? "border-yellow-50 bg-richblack-800"
+                  : "border-richblack-700 hover:bg-richblack-800"
+              }`}
+            >
+              <input
+                type="radio"
+                name="status"
+                value={o.value}
+                checked={status === o.value}
+                onChange={() => setStatus(o.value)}
+                className="mt-1 h-4 w-4 accent-yellow-50"
+              />
+              <span>
+                <span className="block font-bold text-richblack-5">{o.title}</span>
+                <span className="mt-1 block text-sm text-richblack-50">{o.text}</span>
+              </span>
+            </label>
+          ))}
         </div>
+      </fieldset>
 
-        {/* Next Prev Button */}
-        <div className="ml-auto flex max-w-max items-center gap-x-4">
-          <button
-            disabled={loading}
-            type="button"
-            onClick={goBack}
-            className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900"
-          >
-            Back
-          </button>
-          <IconBtn disabled={loading} text="Save Changes" />
-        </div>
-      </form>
-    </div>
+      <div className="flex flex-wrap gap-3 border-t border-richblack-700 pt-6">
+        <IconBtn
+          type="submit"
+          disabled={loading}
+          text={loading ? "Saving..." : status === COURSE_STATUS.PUBLISHED ? "Publish course" : "Save draft"}
+        />
+        <IconBtn
+          type="button"
+          outline
+          disabled={loading}
+          text="Back to sections"
+          onclick={() => dispatch(setStep(2))}
+        />
+      </div>
+    </form>
   )
 }

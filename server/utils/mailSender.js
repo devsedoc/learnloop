@@ -72,7 +72,7 @@ const buildRawMessage = (to, subject, html) => {
     .replace(/(.{76})/g, "$1\r\n");
 
   const message = [
-    `From: ${encodeHeader("StudyNotion")} <${process.env.MAIL_FROM}>`,
+    `From: ${encodeHeader("Learnloop")} <${process.env.MAIL_FROM}>`,
     `To: ${to}`,
     `Subject: ${encodeHeader(subject)}`,
     "MIME-Version: 1.0",
@@ -126,7 +126,7 @@ const sendViaSmtp = async (email, title, body) => {
   });
 
   const info = await transporter.sendMail({
-    from: `"StudyNotion" <${process.env.MAIL_USER}>`,
+    from: `"Learnloop" <${process.env.MAIL_USER}>`,
     to: email,
     subject: title,
     html: body,

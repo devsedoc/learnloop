@@ -1,122 +1,79 @@
-import { RiEditBoxLine } from "react-icons/ri"
+import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 
 import { formattedDate } from "../../../utils/dateFormatter"
-import IconBtn from "../../Common/IconBtn"
+
+function Field({ label, value, placeholder }) {
+  return (
+    <div>
+      <dt className="text-sm text-richblack-100">{label}</dt>
+      <dd className={`mt-1 ${value ? "text-richblack-5" : "text-richblack-100"}`}>
+        {value || placeholder}
+      </dd>
+    </div>
+  )
+}
 
 export default function MyProfile() {
   const { user } = useSelector((state) => state.profile)
-  const navigate = useNavigate()
+  const details = user?.additionalDetails || {}
 
   return (
     <>
-      <h1 className="mb-8 text-3xl font-medium text-richblack-5 md:mb-14">
-        My Profile
-      </h1>
-      <div className="flex flex-col items-start gap-4 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-5 sm:flex-row sm:items-center sm:justify-between md:p-8 md:px-12">
-        <div className="flex min-w-0 items-center gap-x-4">
-          <img
-            src={user?.image}
-            alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[64px] shrink-0 rounded-full object-cover md:w-[78px]"
-          />
-          <div className="min-w-0 space-y-1">
-            <p className="text-lg font-semibold text-richblack-5">
-              {user?.firstName + " " + user?.lastName}
-            </p>
-            <p className="break-all text-sm text-richblack-300">{user?.email}</p>
-          </div>
-        </div>
-        <IconBtn
-          text="Edit"
-          onclick={() => {
-            navigate("/dashboard/settings")
-          }}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-extrabold text-richblack-5">Profile</h1>
+        <Link
+          to="/dashboard/settings"
+          className="rounded-lg border border-richblack-400 px-5 py-2.5 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
         >
-          <RiEditBoxLine />
-        </IconBtn>
+          Edit profile
+        </Link>
       </div>
-      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-5 md:p-8 md:px-12">
-        <div className="flex w-full items-center justify-between">
-          <p className="text-lg font-semibold text-richblack-5">About</p>
-          <IconBtn
-            text="Edit"
-            onclick={() => {
-              navigate("/dashboard/settings")
-            }}
-          >
-            <RiEditBoxLine />
-          </IconBtn>
-        </div>
-        <p
-          className={`${
-            user?.additionalDetails?.about
-              ? "text-richblack-5"
-              : "text-richblack-400"
-          } text-sm font-medium`}
-        >
-          {user?.additionalDetails?.about ?? "Write Something About Yourself"}
-        </p>
-      </div>
-      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-5 md:p-8 md:px-12">
-        <div className="flex w-full items-center justify-between">
-          <p className="text-lg font-semibold text-richblack-5">
-            Personal Details
+
+      <section className="mt-8 flex items-center gap-5 border-b border-richblack-700 pb-8">
+        <img
+          src={user?.image}
+          alt=""
+          className="aspect-square w-16 shrink-0 rounded-full object-cover md:w-20"
+        />
+        <div className="min-w-0">
+          <p className="text-xl font-bold text-richblack-5">
+            {user?.firstName} {user?.lastName}
           </p>
-          <IconBtn
-            text="Edit"
-            onclick={() => {
-              navigate("/dashboard/settings")
-            }}
-          >
-            <RiEditBoxLine />
-          </IconBtn>
+          <p className="break-all text-richblack-50">{user?.email}</p>
         </div>
-        <div className="flex max-w-[500px] flex-col gap-y-5 sm:flex-row sm:justify-between">
-          <div className="flex flex-col gap-y-5">
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">First Name</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {user?.firstName}
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">Email</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {user?.email}
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">Gender</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {user?.additionalDetails?.gender ?? "Add Gender"}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-y-5">
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">Last Name</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {user?.lastName}
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">Phone Number</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {user?.additionalDetails?.contactNumber ?? "Add Contact Number"}
-              </p>
-            </div>
-            <div>
-              <p className="mb-2 text-sm text-richblack-600">Date Of Birth</p>
-              <p className="text-sm font-medium text-richblack-5">
-                {formattedDate(user?.additionalDetails?.dateOfBirth) ??
-                  "Add Date Of Birth"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
+
+      <section className="border-b border-richblack-700 py-8">
+        <h2 className="text-lg font-bold text-richblack-5">About</h2>
+        <p
+          className={`mt-3 max-w-[620px] leading-relaxed ${
+            details.about ? "text-richblack-5" : "text-richblack-100"
+          }`}
+        >
+          {details.about || "Nothing here yet. Add a short bio in Settings."}
+        </p>
+      </section>
+
+      <section className="py-8">
+        <h2 className="text-lg font-bold text-richblack-5">Personal details</h2>
+        <dl className="mt-5 grid max-w-[620px] gap-x-10 gap-y-6 sm:grid-cols-2">
+          <Field label="First name" value={user?.firstName} />
+          <Field label="Last name" value={user?.lastName} />
+          <Field label="Email" value={user?.email} />
+          <Field
+            label="Phone number"
+            value={details.contactNumber}
+            placeholder="Not added"
+          />
+          <Field label="Gender" value={details.gender} placeholder="Not added" />
+          <Field
+            label="Date of birth"
+            value={details.dateOfBirth && formattedDate(details.dateOfBirth)}
+            placeholder="Not added"
+          />
+        </dl>
+      </section>
     </>
   )
 }

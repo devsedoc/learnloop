@@ -1,196 +1,170 @@
-// Icons Import
-import { FaArrowRight } from "react-icons/fa"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-// Image and Video Import
-import Banner from "../assets/Images/banner-optimized.mp4"
-// Component Imports
 import Footer from "../components/Common/Footer"
 import ReviewSlider from "../components/Common/ReviewSlider"
-import CTAButton from "../components/core/HomePage/Button"
-import CodeBlocks from "../components/core/HomePage/CodeBlocks"
-import ExploreMore from "../components/core/HomePage/ExploreMore"
-import HighlightText from "../components/core/HomePage/HighlightText"
-import InstructorSection from "../components/core/HomePage/InstructorSection"
-import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection"
-import TimelineSection from "../components/core/HomePage/Timeline"
+import { apiConnector } from "../services/apiConnector"
+import { categories } from "../services/apis"
 
-function Home() {
+const details = [
+  {
+    term: "Separate student and instructor accounts",
+    text: "Each role has its own dashboard, and the API checks the role on every protected route.",
+  },
+  {
+    term: "Payments through Razorpay",
+    text: "The server verifies the payment signature before a course is unlocked.",
+  },
+  {
+    term: "Saved progress",
+    text: "Finished lectures are recorded per student, so a course reopens where it was left.",
+  },
+  {
+    term: "Reviews from enrolled students only",
+    text: "A course can be rated only by someone who has bought it.",
+  },
+]
+
+const learnerSteps = [
+  "Create an account and confirm it with the code sent to your email",
+  "Choose a course and pay",
+  "Watch the lectures and mark them complete",
+  "Rate the course when you finish",
+]
+
+const instructorSteps = [
+  "Sign up as an instructor",
+  "Add sections and lectures to a new course",
+  "Upload the videos and publish",
+  "Check enrolments and income on your dashboard",
+]
+
+function StepList({ title, steps }) {
   return (
     <div>
-      {/* Section 1 */}
-      <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
-        {/* Become a Instructor Button */}
-        <Link to={"/signup"}>
-          <div className="group mx-auto mt-16 w-fit rounded-full bg-richblack-800 p-1 font-bold text-richblack-200 drop-shadow-[0_1.5px_rgba(255,255,255,0.25)] transition-all duration-200 hover:scale-95 hover:drop-shadow-none">
-            <div className="flex flex-row items-center gap-2 rounded-full px-10 py-[5px] transition-all duration-200 group-hover:bg-richblack-900">
-              <p>Become an Instructor</p>
-              <FaArrowRight />
-            </div>
-          </div>
-        </Link>
+      <h3 className="text-xl font-bold">{title}</h3>
+      <ol className="mt-5 flex flex-col gap-4">
+        {steps.map((step, i) => (
+          <li key={step} className="flex gap-4 text-richblack-25">
+            <span className="w-5 shrink-0 font-mono text-richblack-200">
+              {i + 1}.
+            </span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
 
-        {/* Heading */}
-        <div className="text-center text-4xl font-semibold">
-          Empower Your Future with
-          <HighlightText text={"Coding Skills"} />
-        </div>
+function Home() {
+  const [topics, setTopics] = useState([])
 
-        {/* Sub Heading */}
-        <div className="-mt-3 w-[90%] text-center text-lg font-bold text-richblack-300">
-          With our online coding courses, you can learn at your own pace, from
-          anywhere in the world, and get access to a wealth of resources,
-          including hands-on projects, quizzes, and personalized feedback from
-          instructors.
-        </div>
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const res = await apiConnector("GET", categories.CATEGORIES_API)
+        setTopics(
+          (res?.data?.data || []).filter((c) => c?.courses?.length > 0)
+        )
+      } catch (error) {
+        setTopics([])
+      }
+    })()
+  }, [])
 
-        {/* CTA Buttons */}
-        <div className="mt-8 flex flex-row gap-7">
-          <CTAButton active={true} linkto={"/signup"}>
-            Learn More
-          </CTAButton>
-          <CTAButton active={false} linkto={"/login"}>
-            Book a Demo
-          </CTAButton>
-        </div>
-
-        {/* Video */}
-        <div className="mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200">
-          <video
-            className="shadow-[20px_20px_rgba(255,255,255)]"
-            muted
-            loop
-            autoPlay
-            playsInline
-            preload="metadata"
-          >
-            <source src={Banner} type="video/mp4" />
-          </video>
-        </div>
-
-        {/* Code Section 1  */}
-        <div>
-          <CodeBlocks
-            position={"lg:flex-row"}
-            heading={
-              <div className="text-4xl font-semibold">
-                Unlock your
-                <HighlightText text={"coding potential"} /> with our online
-                courses.
-              </div>
-            }
-            subheading={
-              "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
-            }
-            ctabtn1={{
-              btnText: "Try it Yourself",
-              link: "/signup",
-              active: true,
-            }}
-            ctabtn2={{
-              btnText: "Learn More",
-              link: "/signup",
-              active: false,
-            }}
-            codeColor={"text-yellow-25"}
-            codeblock={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> <a href="/two">Two</a> <a href="/three">Three</a>\n</nav>\n</body>`}
-            backgroundGradient={<div className="codeblock1 absolute"></div>}
-          />
-        </div>
-
-        {/* Code Section 2 */}
-        <div>
-          <CodeBlocks
-            position={"lg:flex-row-reverse"}
-            heading={
-              <div className="w-[100%] text-4xl font-semibold lg:w-[50%]">
-                Start
-                <HighlightText text={"coding in seconds"} />
-              </div>
-            }
-            subheading={
-              "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
-            }
-            ctabtn1={{
-              btnText: "Continue Lesson",
-              link: "/signup",
-              active: true,
-            }}
-            ctabtn2={{
-              btnText: "Learn More",
-              link: "/signup",
-              active: false,
-            }}
-            codeColor={"text-white"}
-            codeblock={`import React from "react";\n import CTAButton from "./Button";\nimport TypeAnimation from "react-type";\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div>Home</div>\n)\n}\nexport default Home;`}
-            backgroundGradient={<div className="codeblock2 absolute"></div>}
-          />
-        </div>
-
-        {/* Explore Section */}
-        <ExploreMore />
-      </div>
-
-      {/* Section 2 */}
-      <div className="bg-pure-greys-5 text-richblack-700">
-        <div className="homepage_bg h-[320px]">
-          {/* Explore Full Catagory Section */}
-          <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
-            <div className="lg:h-[150px]"></div>
-            <div className="flex flex-row gap-7 text-white lg:mt-8">
-              <CTAButton active={true} linkto={"/signup"}>
-                <div className="flex items-center gap-2">
-                  Explore Full Catalog
-                  <FaArrowRight />
-                </div>
-              </CTAButton>
-              <CTAButton active={false} linkto={"/login"}>
-                Learn More
-              </CTAButton>
-            </div>
+  return (
+    <div className="text-richblack-5">
+      {/* Intro */}
+      <section className="border-b border-richblack-700">
+        <div className="mx-auto w-11/12 max-w-maxContent py-16 lg:py-20">
+          <h1 className="max-w-[720px] text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+            Take a video course, or publish one of your own.
+          </h1>
+          <p className="mt-5 max-w-[600px] text-lg leading-relaxed text-richblack-50">
+            Learnloop is a course platform. Students buy courses and work
+            through them lecture by lecture. Instructors build courses, upload
+            the videos and see who has enrolled.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              to="/signup"
+              className="rounded-lg bg-yellow-50 px-6 py-3 text-base font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+            >
+              Create an account
+            </Link>
+            <Link
+              to="/login"
+              className="rounded-lg border border-richblack-400 px-6 py-3 text-base font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+            >
+              Log in
+            </Link>
           </div>
         </div>
+      </section>
 
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 ">
-          {/* Job that is in Demand - Section 1 */}
-          <div className="mb-10 mt-[-100px] flex flex-col justify-between gap-7 lg:mt-20 lg:flex-row lg:gap-0">
-            <div className="text-4xl font-semibold lg:w-[45%] ">
-              Get the skills you need for a{" "}
-              <HighlightText text={"job that is in demand."} />
-            </div>
-            <div className="flex flex-col items-start gap-10 lg:w-[40%]">
-              <div className="text-[16px]">
-                The modern StudyNotion is the dictates its own terms. Today, to
-                be a competitive specialist requires more than professional
-                skills.
-              </div>
-              <CTAButton active={true} linkto={"/signup"}>
-                <div className="">Learn More</div>
-              </CTAButton>
-            </div>
+      {/* Topics, shown only when the catalogue has courses */}
+      {topics.length > 0 && (
+        <section className="border-b border-richblack-700">
+          <div className="mx-auto w-11/12 max-w-maxContent py-12">
+            <h2 className="text-2xl font-extrabold">Courses by topic</h2>
+            <ul className="mt-6 flex flex-wrap gap-3">
+              {topics.map((topic) => (
+                <li key={topic._id}>
+                  <Link
+                    to={`/catalog/${topic.name
+                      .split(" ")
+                      .join("-")
+                      .toLowerCase()}`}
+                    className="block rounded-lg border border-richblack-400 px-5 py-3 text-richblack-5 transition-colors duration-150 hover:bg-richblack-800"
+                  >
+                    {topic.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+        </section>
+      )}
 
-          {/* Timeline Section - Section 2 */}
-          <TimelineSection />
-
-          {/* Learning Language Section - Section 3 */}
-          <LearningLanguageSection />
+      {/* How it works */}
+      <section className="border-b border-richblack-700">
+        <div className="mx-auto w-11/12 max-w-maxContent py-14">
+          <h2 className="text-2xl font-extrabold sm:text-3xl">How it works</h2>
+          <div className="mt-8 grid gap-10 md:grid-cols-2">
+            <StepList title="If you are learning" steps={learnerSteps} />
+            <StepList title="If you are teaching" steps={instructorSteps} />
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Section 3 */}
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
-        {/* Become a instructor section */}
-        <InstructorSection />
+      {/* What is in the app */}
+      <section className="border-b border-richblack-700">
+        <div className="mx-auto w-11/12 max-w-maxContent py-14">
+          <h2 className="text-2xl font-extrabold sm:text-3xl">
+            What is in the app
+          </h2>
+          <dl className="mt-8 grid gap-x-12 gap-y-7 md:grid-cols-2">
+            {details.map(({ term, text }) => (
+              <div key={term} className="border-l-2 border-yellow-50 pl-5">
+                <dt className="font-bold">{term}</dt>
+                <dd className="mt-1 leading-relaxed text-richblack-50">
+                  {text}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
-        {/* Reviws from Other Learner */}
-        <h1 className="text-center text-4xl font-semibold mt-8">
-          Reviews from other learners
-        </h1>
+      {/* Reviews */}
+      <section className="mx-auto w-11/12 max-w-maxContent py-14">
+        <h2 className="text-2xl font-extrabold sm:text-3xl">
+          Reviews from students
+        </h2>
         <ReviewSlider />
-      </div>
+      </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   )

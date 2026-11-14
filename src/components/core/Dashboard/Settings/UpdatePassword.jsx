@@ -1,110 +1,90 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 
 import { changePassword } from "../../../../services/operations/SettingsAPI"
 import IconBtn from "../../../Common/IconBtn"
+import SettingsSection from "./SettingsSection"
+
+function PasswordField({ id, label, autoComplete, register, rules, error }) {
+  const [show, setShow] = useState(false)
+  return (
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="lable-style">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={id}
+          type={show ? "text" : "password"}
+          autoComplete={autoComplete}
+          className="form-style w-full pr-16"
+          {...register(id, rules)}
+        />
+        <button
+          type="button"
+          onClick={() => setShow((s) => !s)}
+          className="absolute inset-y-0 right-1 my-1 rounded-md px-3 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+          aria-label={show ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
+        >
+          {show ? "Hide" : "Show"}
+        </button>
+      </div>
+      {error && <p className="form-error">{error}</p>}
+    </div>
+  )
+}
 
 export default function UpdatePassword() {
   const { token } = useSelector((state) => state.auth)
-  const navigate = useNavigate()
-
-  const [showOldPassword, setShowOldPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm()
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({ defaultValues: { oldPassword: "", newPassword: "" } })
 
   const submitPasswordForm = async (data) => {
-    // console.log("password Data - ", data)
-    try {
-      await changePassword(token, data)
-    } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
-    }
+    // On failure changePassword shows the server's message; keep what was typed.
+    const ok = await changePassword(token, data)
+    if (ok) reset()
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submitPasswordForm)}>
-        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
-          <h2 className="text-lg font-semibold text-richblack-5">Password</h2>
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="oldPassword" className="lable-style">
-                Current Password
-              </label>
-              <input
-                type={showOldPassword ? "text" : "password"}
-                name="oldPassword"
-                id="oldPassword"
-                placeholder="Enter Current Password"
-                className="form-style"
-                {...register("oldPassword", { required: true })}
-              />
-              <span
-                onClick={() => setShowOldPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showOldPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-              {errors.oldPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your Current Password.
-                </span>
-              )}
-            </div>
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="newPassword" className="lable-style">
-                New Password
-              </label>
-              <input
-                type={showNewPassword ? "text" : "password"}
-                name="newPassword"
-                id="newPassword"
-                placeholder="Enter New Password"
-                className="form-style"
-                {...register("newPassword", { required: true })}
-              />
-              <span
-                onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showNewPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-              {errors.newPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your New Password.
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => {
-              navigate("/dashboard/my-profile")
+    <SettingsSection
+      title="Password"
+      description="Use at least 8 characters."
+    >
+      <form onSubmit={handleSubmit(submitPasswordForm)} noValidate>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <PasswordField
+            id="oldPassword"
+            label="Current password"
+            autoComplete="current-password"
+            register={register}
+            rules={{ required: "Enter your current password." }}
+            error={errors.oldPassword?.message}
+          />
+          <PasswordField
+            id="newPassword"
+            label="New password"
+            autoComplete="new-password"
+            register={register}
+            rules={{
+              required: "Enter a new password.",
+              minLength: { value: 8, message: "Use at least 8 characters." },
             }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
-          >
-            Cancel
-          </button>
-          <IconBtn type="submit" text="Update" />
+            error={errors.newPassword?.message}
+          />
+        </div>
+        <div className="mt-6">
+          <IconBtn
+            type="submit"
+            text={isSubmitting ? "Updating..." : "Update password"}
+            disabled={isSubmitting}
+          />
         </div>
       </form>
-    </>
+    </SettingsSection>
   )
 }

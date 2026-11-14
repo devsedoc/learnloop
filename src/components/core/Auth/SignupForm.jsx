@@ -1,21 +1,23 @@
 import { useState } from "react"
-import { toast } from "react-hot-toast"
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 import { sendOtp } from "../../../services/operations/authAPI"
 import { setSignupData } from "../../../slices/authSlice"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
-import Tab from "../../Common/Tab"
+import { Field, PasswordInput, SubmitButton } from "./AuthParts"
+
+const roles = [
+  { type: ACCOUNT_TYPE.STUDENT, title: "Student", text: "Buy and take courses" },
+  { type: ACCOUNT_TYPE.INSTRUCTOR, title: "Instructor", text: "Publish your own courses" },
+]
 
 function SignupForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  // student or instructor
+  const { loading } = useSelector((state) => state.auth)
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
-
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,172 +25,122 @@ function SignupForm() {
     password: "",
     confirmPassword: "",
   })
-
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
   const { firstName, lastName, email, password, confirmPassword } = formData
 
-  // Handle input fields, when some value changes
   const handleOnChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }))
+    setError("")
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  // Handle Form Submission
   const handleOnSubmit = (e) => {
     e.preventDefault()
-
+    if (loading) return
     if (password !== confirmPassword) {
-      toast.error("Passwords Do Not Match")
+      setError("The two passwords don't match.")
       return
     }
-    const signupData = {
-      ...formData,
-      accountType,
-    }
-
-    // Setting signup data to state
-    // To be used after otp verification
-    dispatch(setSignupData(signupData))
-    // Send OTP to user for verification
-    dispatch(sendOtp(formData.email, navigate))
-
-    // Reset
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    })
-    setAccountType(ACCOUNT_TYPE.STUDENT)
+    // Kept for the verify step. The form isn't cleared here, so if sending
+    // the code fails nothing has to be typed again.
+    dispatch(setSignupData({ ...formData, email: email.trim(), accountType }))
+    dispatch(sendOtp(email.trim(), navigate))
   }
 
-  // data to pass to Tab component
-  const tabData = [
-    {
-      id: 1,
-      tabName: "Student",
-      type: ACCOUNT_TYPE.STUDENT,
-    },
-    {
-      id: 2,
-      tabName: "Instructor",
-      type: ACCOUNT_TYPE.INSTRUCTOR,
-    },
-  ]
-
   return (
-    <div>
-      {/* Tab */}
-      <Tab tabData={tabData} field={accountType} setField={setAccountType} />
-      {/* Form */}
-      <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
-        <div className="flex gap-x-4">
-          <label>
-            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              First Name <sup className="text-pink-200">*</sup>
-            </p>
-            <input
-              required
-              type="text"
-              name="firstName"
-              value={firstName}
-              onChange={handleOnChange}
-              placeholder="Enter first name"
-              className="form-style w-full"
-            />
-          </label>
-          <label>
-            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Last Name <sup className="text-pink-200">*</sup>
-            </p>
-            <input
-              required
-              type="text"
-              name="lastName"
-              value={lastName}
-              onChange={handleOnChange}
-              placeholder="Enter last name"
-              className="form-style w-full"
-            />
-          </label>
+    <form onSubmit={handleOnSubmit} className="mt-6 flex w-full flex-col gap-y-5">
+      <fieldset>
+        <legend className="lable-style">I want to join as</legend>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          {roles.map((r) => (
+            <label
+              key={r.type}
+              className={`cursor-pointer rounded-lg border p-3 transition-colors duration-150 focus-within:ring-2 focus-within:ring-yellow-50 ${
+                accountType === r.type
+                  ? "border-yellow-50 bg-richblack-700"
+                  : "border-richblack-600 hover:bg-richblack-700"
+              }`}
+            >
+              <input
+                type="radio"
+                name="accountType"
+                value={r.type}
+                checked={accountType === r.type}
+                onChange={() => setAccountType(r.type)}
+                className="sr-only"
+              />
+              <span className="block font-bold text-richblack-5">{r.title}</span>
+              <span className="mt-0.5 block text-sm text-richblack-50">{r.text}</span>
+            </label>
+          ))}
         </div>
-        <label className="w-full">
-          <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-            Email Address <sup className="text-pink-200">*</sup>
-          </p>
+      </fieldset>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field id="su-first" label="First name">
           <input
             required
-            type="text"
-            name="email"
-            value={email}
+            id="su-first"
+            name="firstName"
+            autoComplete="given-name"
+            value={firstName}
             onChange={handleOnChange}
-            placeholder="Enter email address"
             className="form-style w-full"
           />
-        </label>
-        <div className="flex gap-x-4">
-          <label className="relative">
-            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Create Password <sup className="text-pink-200">*</sup>
-            </p>
-            <input
-              required
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={password}
-              onChange={handleOnChange}
-              placeholder="Enter Password"
-              className="form-style w-full !pr-10"
-            />
-            <span
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-              ) : (
-                <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-              )}
-            </span>
-          </label>
-          <label className="relative">
-            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Confirm Password <sup className="text-pink-200">*</sup>
-            </p>
-            <input
-              required
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={handleOnChange}
-              placeholder="Confirm Password"
-              className="form-style w-full !pr-10"
-            />
-            <span
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-            >
-              {showConfirmPassword ? (
-                <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-              ) : (
-                <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-              )}
-            </span>
-          </label>
-        </div>
-        <button
-          type="submit"
-          className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
-        >
-          Create Account
-        </button>
-      </form>
-    </div>
+        </Field>
+        <Field id="su-last" label="Last name">
+          <input
+            required
+            id="su-last"
+            name="lastName"
+            autoComplete="family-name"
+            value={lastName}
+            onChange={handleOnChange}
+            className="form-style w-full"
+          />
+        </Field>
+      </div>
+
+      <Field id="su-email" label="Email">
+        <input
+          required
+          id="su-email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          value={email}
+          onChange={handleOnChange}
+          className="form-style w-full"
+        />
+      </Field>
+
+      <Field id="su-password" label="Password">
+        <PasswordInput
+          id="su-password"
+          name="password"
+          value={password}
+          onChange={handleOnChange}
+          autoComplete="new-password"
+          minLength={8}
+        />
+        <p className="text-sm text-richblack-100">At least 8 characters.</p>
+      </Field>
+      <Field id="su-confirm" label="Confirm password">
+        <PasswordInput
+          id="su-confirm"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={handleOnChange}
+          autoComplete="new-password"
+        />
+      </Field>
+
+      {error && <p className="form-error">{error}</p>}
+      <SubmitButton loading={loading} loadingText="Sending code...">
+        Create account
+      </SubmitButton>
+      <p className="-mt-2 text-sm text-richblack-100">
+        We'll email you a 6-digit code to confirm your address.
+      </p>
+    </form>
   )
 }
 
