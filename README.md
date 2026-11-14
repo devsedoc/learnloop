@@ -41,7 +41,7 @@ This project uses a React frontend and an Express backend connected to MongoDB.
 ## Project Structure
 
 ```text
-studynotion-edtech/
+learnloop/
 ├── public/
 ├── src/
 │   ├── components/
@@ -77,8 +77,8 @@ Optional services such as Cloudinary, Gmail SMTP, and Razorpay require their own
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/devsedoc/studynotion-edtech.git
-cd studynotion-edtech
+git clone https://github.com/devsedoc/learnloop.git
+cd learnloop
 ```
 
 ### 2. Install dependencies
