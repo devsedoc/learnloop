@@ -1,121 +1,151 @@
-import React from "react"
+import { Link } from "react-router-dom"
 
-import FoundingStory from "../assets/Images/FoundingStory.webp"
-import BannerImage1 from "../assets/Images/aboutus1.webp"
-import BannerImage2 from "../assets/Images/aboutus2.webp"
-import BannerImage3 from "../assets/Images/aboutus3.webp"
 import Footer from "../components/Common/Footer"
-import ReviewSlider from "../components/Common/ReviewSlider"
-import ContactFormSection from "../components/core/AboutPage/ContactFormSection"
-import LearningGrid from "../components/core/AboutPage/LearningGrid"
-import Quote from "../components/core/AboutPage/Quote"
-import StatsComponenet from "../components/core/AboutPage/Stats"
-import HighlightText from "../components/core/HomePage/HighlightText"
+import ContactUsForm from "../components/core/ContactUsPage/ContactUsForm"
 
-const About = () => {
+const stack = [
+  {
+    title: "Front end",
+    text: "React with Redux Toolkit for state, React Router for pages and Tailwind CSS for styling.",
+  },
+  {
+    title: "Back end",
+    text: "A Node.js and Express REST API with separate routes for auth, courses, payments and profiles.",
+  },
+  {
+    title: "Data",
+    text: "MongoDB with Mongoose models for users, courses, sections, lectures, progress and ratings.",
+  },
+  {
+    title: "Accounts",
+    text: "Email one-time codes at sign-up, bcrypt-hashed passwords, JWT sessions and role-based middleware.",
+  },
+  {
+    title: "Payments",
+    text: "Razorpay checkout, with the payment signature verified on the server before enrolment.",
+  },
+  {
+    title: "Hosting",
+    text: "Front end on Vercel, API on Render, database on MongoDB Atlas and media on Cloudinary.",
+  },
+]
+
+const roles = [
+  {
+    name: "Students",
+    points: [
+      "Browse courses by category",
+      "Add courses to a cart and pay",
+      "Watch lectures and mark them complete",
+      "Rate and review enrolled courses",
+    ],
+  },
+  {
+    name: "Instructors",
+    points: [
+      "Create courses with sections and lectures",
+      "Upload thumbnails and lecture video",
+      "Save drafts and publish when ready",
+      "See enrolments and income per course",
+    ],
+  },
+]
+
+function About() {
   return (
-    <div>
-      <section className="bg-richblack-700">
-        <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-white">
-          <header className="mx-auto py-20 text-4xl font-semibold lg:w-[70%]">
-            Driving Innovation in Online Education for a
-            <HighlightText text={"Brighter Future"} />
-            <p className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[95%]">
-              Studynotion is at the forefront of driving innovation in online
-              education. We're passionate about creating a brighter future by
-              offering cutting-edge courses, leveraging emerging technologies,
-              and nurturing a vibrant learning community.
-            </p>
-          </header>
-          <div className="sm:h-[70px] lg:h-[150px]"></div>
-          <div className="absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5">
-            <img src={BannerImage1} alt="" />
-            <img src={BannerImage2} alt="" />
-            <img src={BannerImage3} alt="" />
-          </div>
-        </div>
-      </section>
-
+    <div className="text-richblack-5">
+      {/* Intro */}
       <section className="border-b border-richblack-700">
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
-          <div className="h-[100px] "></div>
-          <Quote />
+        <div className="mx-auto w-11/12 max-w-maxContent py-14 lg:py-16">
+          <h1 className="max-w-[760px] text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+            About Learnloop
+          </h1>
+          <p className="mt-6 max-w-[620px] text-lg leading-relaxed text-richblack-50">
+            Learnloop lets instructors publish video courses and lets students
+            buy them, follow them and track how far they have got. This page
+            explains what it does and how it is put together.
+          </p>
         </div>
       </section>
 
-      <section>
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
-          <div className="flex flex-col items-center gap-10 lg:flex-row justify-between">
-            <div className="my-24 flex lg:w-[50%] flex-col gap-10">
-              <h1 className="bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
-                Our Founding Story
-              </h1>
-              <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                Our e-learning platform was born out of a shared vision and
-                passion for transforming education. It all began with a group of
-                educators, technologists, and lifelong learners who recognized
-                the need for accessible, flexible, and high-quality learning
-                opportunities in a rapidly evolving digital world.
-              </p>
-              <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                As experienced educators ourselves, we witnessed firsthand the
-                limitations and challenges of traditional education systems. We
-                believed that education should not be confined to the walls of a
-                classroom or restricted by geographical boundaries. We
-                envisioned a platform that could bridge these gaps and empower
-                individuals from all walks of life to unlock their full
-                potential.
-              </p>
-            </div>
-
-            <div>
-              <img
-                src={FoundingStory}
-                alt=""
-                loading="lazy" decoding="async"
-                className="shadow-[0_0_20px_0] shadow-[#FC6767]"
-              />
-            </div>
+      {/* Roles */}
+      <section className="mx-auto grid w-11/12 max-w-maxContent gap-5 py-14 md:grid-cols-2">
+        {roles.map((role) => (
+          <div
+            key={role.name}
+            className="rounded-xl border border-richblack-700 bg-richblack-800 p-8"
+          >
+            <h2 className="text-2xl font-extrabold">{role.name} can</h2>
+            <ul className="mt-5 flex flex-col gap-3">
+              {role.points.map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-yellow-50"></span>
+                  <span className="text-richblack-50">{point}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="flex flex-col items-center lg:gap-10 lg:flex-row justify-between">
-            <div className="my-24 flex lg:w-[40%] flex-col gap-10">
-              <h1 className="bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
-                Our Vision
-              </h1>
-              <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                With this vision in mind, we set out on a journey to create an
-                e-learning platform that would revolutionize the way people
-                learn. Our team of dedicated experts worked tirelessly to
-                develop a robust and intuitive platform that combines
-                cutting-edge technology with engaging content, fostering a
-                dynamic and interactive learning experience.
-              </p>
-            </div>
-            <div className="my-24 flex lg:w-[40%] flex-col gap-10">
-              <h1 className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text text-4xl font-semibold lg:w-[70%] ">
-              Our Mission
-              </h1>
-              <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-              Our mission goes beyond just delivering courses online. We wanted to create a vibrant community of learners, where individuals can connect, collaborate, and learn from one another. We believe that knowledge thrives in an environment of sharing and dialogue, and we foster this spirit of collaboration through forums, live sessions, and networking opportunities.
-              </p>
-            </div>
+        ))}
+      </section>
+
+      {/* How it is built */}
+      <section className="border-y border-richblack-800 bg-richblack-800">
+        <div className="mx-auto w-11/12 max-w-maxContent py-14">
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+            How it is built
+          </h2>
+          <div className="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+            {stack.map(({ title, text }) => (
+              <div key={title}>
+                <p className="font-bold">{title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-richblack-50">
+                  {text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <StatsComponenet />
-      <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
-        <LearningGrid />
-        <ContactFormSection />
+      {/* Builder + contact */}
+      <section className="mx-auto grid w-11/12 max-w-maxContent gap-12 py-14 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 className="text-3xl font-extrabold tracking-tight">
+            Devang Sharma
+          </h2>
+          <p className="mt-4 leading-relaxed text-richblack-50">
+            I am a Computer Science and Business Systems student at Dayananda
+            Sagar College of Engineering, Bengaluru, and I work on Learnloop
+            to get better at full-stack development.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="https://github.com/devsedoc/studynotion-edtech"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-lg border border-richblack-400 px-5 py-3 font-bold transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+            >
+              View the code
+            </a>
+            <Link
+              to="/signup"
+              className="rounded-lg bg-yellow-50 px-5 py-3 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+            >
+              Try it
+            </Link>
+          </div>
+        </div>
+        <div className="rounded-xl border border-richblack-700 bg-richblack-800 p-8">
+          <h3 className="text-xl font-extrabold">Send a message</h3>
+          <p className="mt-2 text-sm text-richblack-100">
+            Questions or feedback about the project are welcome.
+          </p>
+          <div className="mt-6">
+            <ContactUsForm />
+          </div>
+        </div>
       </section>
 
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
-        {/* Reviws from Other Learner */}
-        <h1 className="text-center text-4xl font-semibold mt-8">
-          Reviews from other learners
-        </h1>
-        <ReviewSlider />
-      </div>
       <Footer />
     </div>
   )

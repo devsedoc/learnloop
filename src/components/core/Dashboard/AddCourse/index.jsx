@@ -2,37 +2,32 @@ import RenderSteps from "./RenderSteps"
 
 export default function AddCourse() {
   return (
-    <>
-      <div className="flex w-full items-start gap-x-6">
-        <div className="flex flex-1 flex-col">
-          <h1 className="mb-14 text-3xl font-medium text-richblack-5">
-            Add Course
-          </h1>
-          <div className="flex-1">
-            <RenderSteps />
-          </div>
+    <div>
+      <h1 className="text-3xl font-extrabold text-richblack-5">New course</h1>
+      <div className="mt-8 flex items-start gap-10">
+        <div className="min-w-0 max-w-3xl flex-1">
+          <RenderSteps />
         </div>
-        {/* Course Upload Tips */}
-        <div className="sticky top-10 hidden max-w-[400px] flex-1 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6 xl:block">
-          <p className="mb-8 text-lg text-richblack-5">⚡ Course Upload Tips</p>
-          <ul className="ml-5 list-item list-disc space-y-4 text-xs text-richblack-5">
-            <li>Set the Course Price option or make it free.</li>
-            <li>Standard size for the course thumbnail is 1024x576.</li>
-            <li>Video section controls the course overview video.</li>
-            <li>Course Builder is where you create & organize a course.</li>
+        <aside className="sticky top-8 hidden w-[280px] shrink-0 border-l border-richblack-700 pl-6 xl:block">
+          <h2 className="font-bold text-richblack-5">Before you start</h2>
+          <ul className="mt-4 list-disc space-y-3 pl-4 text-sm text-richblack-50">
+            <li>Set a price in rupees, or 0 to make the course free.</li>
+            <li>Thumbnails look best at 16:9, for example 1024 × 576.</li>
             <li>
-              Add Topics in the Course Builder section to create lessons,
-              quizzes, and assignments.
+              A course is split into sections, and each section holds one or
+              more video lectures.
             </li>
             <li>
-              Information from the Additional Data section shows up on the
-              course single page.
+              Every section needs at least one lecture before you can move on
+              to publishing.
             </li>
-            <li>Make Announcements to notify any important</li>
-            <li>Notes to all enrolled students at once.</li>
+            <li>
+              The course stays a draft, hidden from students, until you publish
+              it.
+            </li>
           </ul>
-        </div>
+        </aside>
       </div>
-    </>
+    </div>
   )
 }

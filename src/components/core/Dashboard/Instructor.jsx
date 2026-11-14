@@ -4,138 +4,134 @@ import { Link } from "react-router-dom"
 
 import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI"
 import { getInstructorData } from "../../../services/operations/profileAPI"
-import InstructorChart from "./InstructorDashboard/InstructorChart"
+
+const rupees = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`
 
 export default function Instructor() {
   const { token } = useSelector((state) => state.auth)
   const { user } = useSelector((state) => state.profile)
-  const [loading, setLoading] = useState(false)
-  const [instructorData, setInstructorData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState([])
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
     ;(async () => {
       setLoading(true)
-      const instructorApiData = await getInstructorData(token)
-      const result = await fetchInstructorCourses(token)
-      console.log(instructorApiData)
-      if (instructorApiData.length) setInstructorData(instructorApiData)
-      if (result) {
-        setCourses(result)
-      }
+      const [statsData, courseData] = await Promise.all([
+        getInstructorData(token),
+        fetchInstructorCourses(token),
+      ])
+      setStats(statsData || [])
+      setCourses(courseData || [])
       setLoading(false)
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const totalAmount = instructorData?.reduce(
-    (acc, curr) => acc + curr.totalAmountGenerated,
-    0
-  )
-
-  const totalStudents = instructorData?.reduce(
-    (acc, curr) => acc + curr.totalStudentsEnrolled,
-    0
-  )
+  const totalIncome = stats.reduce((sum, c) => sum + (c.totalAmountGenerated || 0), 0)
+  const totalStudents = stats.reduce((sum, c) => sum + (c.totalStudentsEnrolled || 0), 0)
 
   return (
     <div>
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-richblack-5">
-          Hi {user?.firstName} 👋
-        </h1>
-        <p className="font-medium text-richblack-200">
-          Let's start something new
-        </p>
-      </div>
+      <h1 className="text-3xl font-extrabold text-richblack-5">
+        Dashboard
+      </h1>
+
       {loading ? (
-        <div className="spinner"></div>
-      ) : courses.length > 0 ? (
-        <div>
-          <div className="my-4 flex h-[450px] space-x-4">
-            {/* Render chart / graph */}
-            {totalAmount > 0 || totalStudents > 0 ? (
-              <InstructorChart courses={instructorData} />
-            ) : (
-              <div className="flex-1 rounded-md bg-richblack-800 p-6">
-                <p className="text-lg font-bold text-richblack-5">Visualize</p>
-                <p className="mt-4 text-xl font-medium text-richblack-50">
-                  Not Enough Data To Visualize
-                </p>
-              </div>
-            )}
-            {/* Total Statistics */}
-            <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
-              <p className="text-lg font-bold text-richblack-5">Statistics</p>
-              <div className="mt-4 space-y-4">
-                <div>
-                  <p className="text-lg text-richblack-200">Total Courses</p>
-                  <p className="text-3xl font-semibold text-richblack-50">
-                    {courses.length}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-lg text-richblack-200">Total Students</p>
-                  <p className="text-3xl font-semibold text-richblack-50">
-                    {totalStudents}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-lg text-richblack-200">Total Income</p>
-                  <p className="text-3xl font-semibold text-richblack-50">
-                    Rs. {totalAmount}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-md bg-richblack-800 p-6">
-            {/* Render 3 courses */}
-            <div className="flex items-center justify-between">
-              <p className="text-lg font-bold text-richblack-5">Your Courses</p>
-              <Link to="/dashboard/my-courses">
-                <p className="text-xs font-semibold text-yellow-50">View All</p>
-              </Link>
-            </div>
-            <div className="my-4 flex items-start space-x-6">
-              {courses.slice(0, 3).map((course) => (
-                <div key={course._id} className="w-1/3">
-                  <img
-                    src={course.thumbnail}
-                    alt={course.courseName}
-                    className="h-[201px] w-full rounded-md object-cover"
-                  />
-                  <div className="mt-3 w-full">
-                    <p className="text-sm font-medium text-richblack-50">
-                      {course.courseName}
-                    </p>
-                    <div className="mt-1 flex items-center space-x-2">
-                      <p className="text-xs font-medium text-richblack-300">
-                        {course.studentsEnroled.length} students
-                      </p>
-                      <p className="text-xs font-medium text-richblack-300">
-                        |
-                      </p>
-                      <p className="text-xs font-medium text-richblack-300">
-                        Rs. {course.price}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="mt-20 rounded-md bg-richblack-800 p-6 py-20">
-          <p className="text-center text-2xl font-bold text-richblack-5">
-            You have not created any courses yet
+        <p className="mt-8 text-richblack-50">Loading your courses...</p>
+      ) : courses.length === 0 ? (
+        <div className="mt-8 border-t border-richblack-700 pt-8">
+          <p className="text-lg text-richblack-5">
+            You have not created a course yet.
           </p>
-          <Link to="/dashboard/add-course">
-            <p className="mt-1 text-center text-lg font-semibold text-yellow-50">
-              Create a course
-            </p>
+          <Link
+            to="/dashboard/add-course"
+            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+          >
+            Create your first course
           </Link>
         </div>
+      ) : (
+        <>
+          {/* Totals */}
+          <dl className="mt-8 grid grid-cols-3 border-y border-richblack-700">
+            {[
+              ["Courses", courses.length],
+              ["Students", totalStudents],
+              ["Income", rupees(totalIncome)],
+            ].map(([label, value], i) => (
+              <div
+                key={label}
+                className={`py-5 ${i > 0 ? "border-l border-richblack-700 pl-5" : ""}`}
+              >
+                <dt className="text-sm text-richblack-100">{label}</dt>
+                <dd className="mt-1 text-2xl font-extrabold text-richblack-5 sm:text-3xl">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* Per-course breakdown */}
+          <div className="mt-10 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-richblack-5">By course</h2>
+            <Link
+              to="/dashboard/my-courses"
+              className="font-bold text-yellow-50 hover:underline"
+            >
+              Manage courses
+            </Link>
+          </div>
+          <table className="mt-4 w-full text-left">
+            <thead>
+              <tr className="border-b border-richblack-700 text-sm text-richblack-100">
+                <th className="py-3 font-normal">Course</th>
+                <th className="hidden py-3 text-right font-normal sm:table-cell">Students</th>
+                <th className="hidden py-3 text-right font-normal sm:table-cell">Price</th>
+                <th className="hidden py-3 text-right font-normal sm:table-cell">Income</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map((course) => {
+                const s = stats.find((x) => x._id === course._id) || {}
+                const students =
+                  s.totalStudentsEnrolled ?? course.studentsEnroled?.length ?? 0
+                const price = course.price ? rupees(course.price) : "Free"
+                const income = rupees(s.totalAmountGenerated)
+                return (
+                  <tr key={course._id} className="border-b border-richblack-800">
+                    <td className="py-4 sm:pr-4">
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={course.thumbnail}
+                          alt=""
+                          className="h-12 w-20 shrink-0 rounded-md object-cover"
+                        />
+                        <div>
+                          <p className="text-richblack-5">{course.courseName}</p>
+                          {/* Phones: numbers sit under the name instead of in columns */}
+                          <p className="mt-1 text-sm text-richblack-100 sm:hidden">
+                            {students} {students === 1 ? "student" : "students"} ·{" "}
+                            {price} · {income} earned
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="hidden py-4 text-right text-richblack-25 sm:table-cell">
+                      {students}
+                    </td>
+                    <td className="hidden py-4 text-right text-richblack-25 sm:table-cell">
+                      {price}
+                    </td>
+                    <td className="hidden py-4 text-right text-richblack-25 sm:table-cell">
+                      {income}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   )

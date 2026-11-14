@@ -1,198 +1,154 @@
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 
 import { updateProfile } from "../../../../services/operations/SettingsAPI"
 import IconBtn from "../../../Common/IconBtn"
+import SettingsSection from "./SettingsSection"
 
 const genders = ["Male", "Female", "Non-Binary", "Prefer not to say", "Other"]
+
+function Field({ id, label, error, children }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="lable-style">
+        {label}
+      </label>
+      {children}
+      {error && <p className="form-error">{error}</p>}
+    </div>
+  )
+}
 
 export default function EditProfile() {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const details = user?.additionalDetails || {}
+
+  const defaults = {
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    dateOfBirth: details.dateOfBirth || "",
+    gender: details.gender || "",
+    contactNumber: details.contactNumber || "",
+    about: details.about || "",
+  }
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm()
+    reset,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm({ defaultValues: defaults })
 
   const submitProfileForm = async (data) => {
-    // console.log("Form Data - ", data)
-    try {
-      dispatch(updateProfile(token, data))
-    } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
-    }
+    const ok = await dispatch(updateProfile(token, data))
+    if (ok) reset(data) // the saved values become the new baseline
   }
+
   return (
-    <>
-      <form onSubmit={handleSubmit(submitProfileForm)}>
-        {/* Profile Information */}
-        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
-          <h2 className="text-lg font-semibold text-richblack-5">
-            Profile Information
-          </h2>
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="firstName" className="lable-style">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                placeholder="Enter first name"
-                className="form-style"
-                {...register("firstName", { required: true })}
-                defaultValue={user?.firstName}
-              />
-              {errors.firstName && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your first name.
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="lastName" className="lable-style">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                placeholder="Enter first name"
-                className="form-style"
-                {...register("lastName", { required: true })}
-                defaultValue={user?.lastName}
-              />
-              {errors.lastName && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your last name.
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="dateOfBirth" className="lable-style">
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                name="dateOfBirth"
-                id="dateOfBirth"
-                className="form-style"
-                {...register("dateOfBirth", {
-                  required: {
-                    value: true,
-                    message: "Please enter your Date of Birth.",
-                  },
-                  max: {
-                    value: new Date().toISOString().split("T")[0],
-                    message: "Date of Birth cannot be in the future.",
-                  },
-                })}
-                defaultValue={user?.additionalDetails?.dateOfBirth}
-              />
-              {errors.dateOfBirth && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  {errors.dateOfBirth.message}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="gender" className="lable-style">
-                Gender
-              </label>
-              <select
-                type="text"
-                name="gender"
-                id="gender"
-                className="form-style"
-                {...register("gender", { required: true })}
-                defaultValue={user?.additionalDetails?.gender}
-              >
-                {genders.map((ele, i) => {
-                  return (
-                    <option key={i} value={ele}>
-                      {ele}
-                    </option>
-                  )
-                })}
-              </select>
-              {errors.gender && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your Date of Birth.
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="contactNumber" className="lable-style">
-                Contact Number
-              </label>
-              <input
-                type="tel"
-                name="contactNumber"
-                id="contactNumber"
-                placeholder="Enter Contact Number"
-                className="form-style"
-                {...register("contactNumber", {
-                  required: {
-                    value: true,
-                    message: "Please enter your Contact Number.",
-                  },
-                  maxLength: { value: 12, message: "Invalid Contact Number" },
-                  minLength: { value: 10, message: "Invalid Contact Number" },
-                })}
-                defaultValue={user?.additionalDetails?.contactNumber}
-              />
-              {errors.contactNumber && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  {errors.contactNumber.message}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="about" className="lable-style">
-                About
-              </label>
-              <input
-                type="text"
-                name="about"
+    <SettingsSection
+      title="Personal details"
+      description="Shown on your profile. Your email can't be changed here."
+    >
+      <form onSubmit={handleSubmit(submitProfileForm)} noValidate>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field id="firstName" label="First name" error={errors.firstName?.message}>
+            <input
+              id="firstName"
+              type="text"
+              autoComplete="given-name"
+              className="form-style"
+              {...register("firstName", { required: "Enter your first name." })}
+            />
+          </Field>
+          <Field id="lastName" label="Last name" error={errors.lastName?.message}>
+            <input
+              id="lastName"
+              type="text"
+              autoComplete="family-name"
+              className="form-style"
+              {...register("lastName", { required: "Enter your last name." })}
+            />
+          </Field>
+          <Field id="dateOfBirth" label="Date of birth" error={errors.dateOfBirth?.message}>
+            <input
+              id="dateOfBirth"
+              type="date"
+              className="form-style [color-scheme:dark]"
+              {...register("dateOfBirth", {
+                required: "Enter your date of birth.",
+                max: {
+                  value: new Date().toISOString().split("T")[0],
+                  message: "Date of birth can't be in the future.",
+                },
+              })}
+            />
+          </Field>
+          <Field id="gender" label="Gender" error={errors.gender?.message}>
+            <select
+              id="gender"
+              className="form-style"
+              {...register("gender", { required: "Choose an option." })}
+            >
+              <option value="" disabled>
+                Choose one
+              </option>
+              {genders.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field id="contactNumber" label="Phone number" error={errors.contactNumber?.message}>
+            <input
+              id="contactNumber"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel"
+              placeholder="10-digit mobile number"
+              className="form-style"
+              {...register("contactNumber", {
+                required: "Enter your phone number.",
+                // Accept "98765 43210" or "98765-43210"; store digits only.
+                setValueAs: (v) => String(v || "").replace(/[\s-]/g, ""),
+                pattern: {
+                  value: /^\d{10,12}$/,
+                  message: "Use 10 to 12 digits.",
+                },
+              })}
+            />
+          </Field>
+          <div className="sm:col-span-2">
+            <Field id="about" label="About" error={errors.about?.message}>
+              <textarea
                 id="about"
-                placeholder="Enter Bio Details"
-                className="form-style"
-                {...register("about", { required: true })}
-                defaultValue={user?.additionalDetails?.about}
+                rows={3}
+                placeholder="A line or two about you"
+                className="form-style resize-y"
+                {...register("about", { required: "Write a short line about yourself." })}
               />
-              {errors.about && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your About.
-                </span>
-              )}
-            </div>
+            </Field>
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => {
-              navigate("/dashboard/my-profile")
-            }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
-          >
-            Cancel
-          </button>
-          <IconBtn type="submit" text="Save" />
+        <div className="mt-6 flex flex-wrap gap-3">
+          <IconBtn
+            type="submit"
+            text={isSubmitting ? "Saving..." : "Save changes"}
+            disabled={!isDirty || isSubmitting}
+          />
+          {isDirty && !isSubmitting && (
+            <IconBtn
+              type="button"
+              text="Discard"
+              outline
+              onclick={() => reset()}
+            />
+          )}
         </div>
       </form>
-    </>
+    </SettingsSection>
   )
 }

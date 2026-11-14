@@ -1,26 +1,56 @@
+import { useEffect } from "react"
+
 import IconBtn from "./IconBtn"
 
+// modalData: { text1, text2, btn1Text, btn2Text, btn1Handler, btn2Handler, danger? }
 export default function ConfirmationModal({ modalData }) {
+  // Escape works like Cancel.
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && modalData?.btn2Handler?.()
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [modalData])
+
   return (
-    <div className="fixed inset-0 z-[1000] !mt-0 grid place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
-      <div className="w-11/12 max-w-[350px] rounded-lg border border-richblack-400 bg-richblack-800 p-6">
-        <p className="text-2xl font-semibold text-richblack-5">
+    <div
+      className="fixed inset-0 z-[1000] !mt-0 grid place-items-center overflow-auto bg-black/70 px-4"
+      onClick={modalData?.btn2Handler}
+    >
+      <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirm-title"
+        className="w-full max-w-[400px] rounded-lg border border-richblack-600 bg-richblack-800 p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p id="confirm-title" className="text-xl font-bold text-richblack-5">
           {modalData?.text1}
         </p>
-        <p className="mt-3 mb-5 leading-6 text-richblack-200">
-          {modalData?.text2}
-        </p>
-        <div className="flex items-center gap-x-4">
+        {modalData?.text2 && (
+          <p className="mt-2 text-richblack-50">{modalData.text2}</p>
+        )}
+        <div className="mt-6 flex flex-wrap gap-3">
+          {modalData?.danger ? (
+            <button
+              type="button"
+              onClick={modalData?.btn1Handler}
+              className="rounded-lg bg-pink-200 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-pink-100 active:bg-pink-300"
+            >
+              {modalData?.btn1Text}
+            </button>
+          ) : (
+            <IconBtn
+              type="button"
+              onclick={modalData?.btn1Handler}
+              text={modalData?.btn1Text}
+            />
+          )}
           <IconBtn
-            onclick={modalData?.btn1Handler}
-            text={modalData?.btn1Text}
+            type="button"
+            outline
+            onclick={modalData?.btn2Handler}
+            text={modalData?.btn2Text}
           />
-          <button
-            className="cursor-pointer rounded-md bg-richblack-200 py-[8px] px-[20px] font-semibold text-richblack-900"
-            onClick={modalData?.btn2Handler}
-          >
-            {modalData?.btn2Text}
-          </button>
         </div>
       </div>
     </div>

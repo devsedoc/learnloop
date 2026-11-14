@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -9,37 +8,31 @@ import ConfirmationModal from "../../Common/ConfirmationModal"
 import SidebarLink from "./SidebarLink"
 
 export default function Sidebar() {
-  const { user, loading: profileLoading } = useSelector(
-    (state) => state.profile
-  )
-  const { loading: authLoading } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // to keep track of confirmation modal
   const [confirmationModal, setConfirmationModal] = useState(null)
 
-  if (profileLoading || authLoading) {
-    return (
-      <div className="grid h-14 w-full items-center border-b-[1px] border-b-richblack-700 bg-richblack-800 md:h-[calc(100vh-3.5rem)] md:w-auto md:min-w-[220px] md:border-b-0 md:border-r-[1px] md:border-r-richblack-700">
-        <div className="spinner"></div>
-      </div>
-    )
-  }
+  const links = sidebarLinks.filter(
+    (link) => !link.type || user?.accountType === link.type
+  )
 
   return (
     <>
-      {/* Phones: horizontal scrollable bar on top. Desktop: left sidebar */}
-      <div className="flex w-full flex-row overflow-x-auto border-b-[1px] border-b-richblack-700 bg-richblack-800 py-2 md:h-[calc(100vh-3.5rem)] md:w-auto md:min-w-[220px] md:flex-col md:overflow-x-visible md:border-b-0 md:border-r-[1px] md:border-r-richblack-700 md:py-10">
-        <div className="flex flex-row md:flex-col">
-          {sidebarLinks.map((link) => {
-            if (link.type && user?.accountType !== link.type) return null
-            return (
-              <SidebarLink key={link.id} link={link} iconName={link.icon} />
-            )
-          })}
+      {/* Phones: a scrollable row of tabs. Desktop: a left column. */}
+      <aside className="border-b border-richblack-700 bg-richblack-900 md:h-[calc(100vh-4rem)] md:w-[240px] md:shrink-0 md:border-b-0 md:border-r">
+        <div className="hidden px-6 pb-4 pt-8 md:block">
+          <p className="truncate font-bold text-richblack-5">
+            {user?.firstName} {user?.lastName}
+          </p>
+          <p className="text-sm text-richblack-100">{user?.accountType}</p>
         </div>
-        <div className="mx-auto mt-6 mb-6 hidden h-[1px] w-10/12 bg-richblack-700 md:block" />
-        <div className="flex flex-row md:flex-col">
+
+        <nav className="flex gap-1 overflow-x-auto px-3 py-2 md:flex-col md:overflow-visible md:py-0">
+          {links.map((link) => (
+            <SidebarLink key={link.id} link={link} iconName={link.icon} />
+          ))}
+          <div className="my-3 hidden border-t border-richblack-700 md:block" />
           <SidebarLink
             link={{ name: "Settings", path: "/dashboard/settings" }}
             iconName="VscSettingsGear"
@@ -47,23 +40,20 @@ export default function Sidebar() {
           <button
             onClick={() =>
               setConfirmationModal({
-                text1: "Are you sure?",
-                text2: "You will be logged out of your account.",
-                btn1Text: "Logout",
+                text1: "Log out?",
+                text2: "You will need to log in again to see your courses.",
+                btn1Text: "Log out",
                 btn2Text: "Cancel",
                 btn1Handler: () => dispatch(logout(navigate)),
                 btn2Handler: () => setConfirmationModal(null),
               })
             }
-            className="whitespace-nowrap px-4 py-2 text-sm font-medium text-richblack-300 md:px-8"
+            className="whitespace-nowrap rounded-lg px-3 py-2.5 text-left text-richblack-50 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
           >
-            <div className="flex items-center gap-x-2">
-              <VscSignOut className="text-lg" />
-              <span>Logout</span>
-            </div>
+            Log out
           </button>
-        </div>
-      </div>
+        </nav>
+      </aside>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
   )
