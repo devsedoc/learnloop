@@ -57,7 +57,7 @@ function About() {
       {/* Intro */}
       <section className="border-b border-richblack-700">
         <div className="mx-auto w-11/12 max-w-maxContent py-14 lg:py-16">
-          <h1 className="max-w-[760px] text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          <h1 className="max-w-[760px] text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
             About Learnloop
           </h1>
           <p className="mt-6 max-w-[620px] text-lg leading-relaxed text-richblack-50">
@@ -75,7 +75,7 @@ function About() {
             key={role.name}
             className="rounded-xl border border-richblack-700 bg-richblack-800 p-8"
           >
-            <h2 className="text-2xl font-extrabold">{role.name} can</h2>
+            <h2 className="text-2xl font-semibold">{role.name} can</h2>
             <ul className="mt-5 flex flex-col gap-3">
               {role.points.map((point) => (
                 <li key={point} className="flex items-start gap-3">
@@ -91,13 +91,13 @@ function About() {
       {/* How it is built */}
       <section className="border-y border-richblack-800 bg-richblack-800">
         <div className="mx-auto w-11/12 max-w-maxContent py-14">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             How it is built
           </h2>
           <div className="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
             {stack.map(({ title, text }) => (
               <div key={title}>
-                <p className="font-bold">{title}</p>
+                <p className="font-medium">{title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-richblack-50">
                   {text}
                 </p>
@@ -110,7 +110,7 @@ function About() {
       {/* Builder + contact */}
       <section className="mx-auto grid w-11/12 max-w-maxContent gap-12 py-14 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight">
+          <h2 className="text-3xl font-semibold tracking-tight">
             Devang Sharma
           </h2>
           <p className="mt-4 leading-relaxed text-richblack-50">
@@ -123,20 +123,20 @@ function About() {
               href="https://github.com/devsedoc/studynotion-edtech"
               target="_blank"
               rel="noreferrer"
-              className="rounded-lg border border-richblack-400 px-5 py-3 font-bold transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+              className="rounded-lg border border-richblack-400 px-5 py-3 font-medium transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
             >
               View the code
             </a>
             <Link
               to="/signup"
-              className="rounded-lg bg-yellow-50 px-5 py-3 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+              className="rounded-lg bg-yellow-50 px-5 py-3 font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
             >
               Try it
             </Link>
           </div>
         </div>
         <div className="rounded-xl border border-richblack-700 bg-richblack-800 p-8">
-          <h3 className="text-xl font-extrabold">Send a message</h3>
+          <h3 className="text-xl font-semibold">Send a message</h3>
           <p className="mt-2 text-sm text-richblack-100">
             Questions or feedback about the project are welcome.
           </p>

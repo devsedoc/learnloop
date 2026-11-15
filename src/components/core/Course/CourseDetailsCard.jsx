@@ -44,7 +44,7 @@ export default function CourseDetailsCard({ course, requireLogin, handleBuyCours
         alt=""
         className="hidden aspect-video w-full rounded-md object-cover lg:block"
       />
-      <p className="text-3xl font-extrabold text-richblack-5 lg:mt-5">
+      <p className="text-3xl font-semibold text-richblack-5 lg:mt-5">
         {rupees(course.price)}
       </p>
 
@@ -52,7 +52,7 @@ export default function CourseDetailsCard({ course, requireLogin, handleBuyCours
         {enrolled ? (
           <Link
             to="/dashboard/enrolled-courses"
-            className="rounded-lg bg-yellow-50 px-5 py-3 text-center font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+            className="rounded-lg bg-yellow-50 px-5 py-3 text-center font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
           >
             Go to the course
           </Link>
@@ -73,7 +73,7 @@ export default function CourseDetailsCard({ course, requireLogin, handleBuyCours
             {inCart ? (
               <Link
                 to="/dashboard/cart"
-                className="rounded-lg border border-richblack-400 px-5 py-3 text-center font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+                className="rounded-lg border border-richblack-400 px-5 py-3 text-center font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
               >
                 In your cart. View cart
               </Link>
@@ -93,7 +93,7 @@ export default function CourseDetailsCard({ course, requireLogin, handleBuyCours
       <button
         type="button"
         onClick={handleShare}
-        className="mt-4 w-full rounded-lg px-3 py-2 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+        className="mt-4 w-full rounded-lg px-3 py-2 text-sm font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
       >
         {copied ? "Link copied" : "Copy link to this course"}
       </button>

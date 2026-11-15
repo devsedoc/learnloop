@@ -39,7 +39,7 @@ function LoginForm() {
         id="login-password"
         label="Password"
         aside={
-          <Link to="/forgot-password" className="text-sm font-bold text-yellow-50 hover:underline">
+          <Link to="/forgot-password" className="text-sm font-medium text-yellow-50 hover:underline">
             Forgot password?
           </Link>
         }

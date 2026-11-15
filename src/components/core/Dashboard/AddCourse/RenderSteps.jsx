@@ -25,7 +25,7 @@ export default function RenderSteps() {
               aria-current={state === "current" ? "step" : undefined}
               className={
                 state === "current"
-                  ? "font-bold text-yellow-50"
+                  ? "font-medium text-yellow-50"
                   : state === "done"
                   ? "text-richblack-5"
                   : "text-richblack-100"

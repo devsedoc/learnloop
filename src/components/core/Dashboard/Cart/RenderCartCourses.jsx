@@ -24,7 +24,7 @@ export default function RenderCartCourses() {
               className="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
             />
             <div className="min-w-0 flex-1">
-              <p className="font-bold text-richblack-5">{course?.courseName}</p>
+              <p className="font-medium text-richblack-5">{course?.courseName}</p>
               <p className="mt-1 text-sm text-richblack-100">
                 {course?.category?.name}
                 {course?.category?.name && " · "}
@@ -34,12 +34,12 @@ export default function RenderCartCourses() {
               </p>
             </div>
             <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:justify-start">
-              <p className="text-lg font-bold text-richblack-5">{rupees(course?.price)}</p>
+              <p className="text-lg font-medium text-richblack-5">{rupees(course?.price)}</p>
               <button
                 type="button"
                 disabled={paymentLoading}
                 onClick={() => dispatch(removeFromCart(course._id))}
-                className="rounded-lg px-3 py-2 font-bold text-pink-200 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg px-3 py-2 font-medium text-pink-200 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Remove
               </button>

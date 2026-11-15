@@ -28,7 +28,7 @@ export default function EditCourse() {
 
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-richblack-5">
+      <h1 className="text-3xl font-semibold text-richblack-5">
         {course?.courseName && !loading ? `Edit: ${course.courseName}` : "Edit course"}
       </h1>
       <div className="mt-8 max-w-3xl">
@@ -43,7 +43,7 @@ export default function EditCourse() {
             </p>
             <Link
               to="/dashboard/my-courses"
-              className="mt-4 inline-block font-bold text-yellow-50 hover:underline"
+              className="mt-4 inline-block font-medium text-yellow-50 hover:underline"
             >
               Back to My courses
             </Link>

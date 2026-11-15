@@ -28,7 +28,7 @@ export default function MyCourses() {
   return (
     <div>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-3xl font-extrabold text-richblack-5">My courses</h1>
+        <h1 className="text-3xl font-semibold text-richblack-5">My courses</h1>
         <IconBtn
           text="New course"
           onclick={() => navigate("/dashboard/add-course")}

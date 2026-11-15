@@ -123,14 +123,14 @@ export default function SubSectionModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-4 border-b border-richblack-700 py-4 pl-6 pr-3">
-          <h2 id="lecture-dialog-title" className="text-xl font-bold text-richblack-5">
+          <h2 id="lecture-dialog-title" className="text-xl font-medium text-richblack-5">
             {title}
           </h2>
           <button
             type="button"
             onClick={close}
             disabled={loading}
-            className="rounded-md px-3 py-1.5 font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600 disabled:opacity-50"
+            className="rounded-md px-3 py-1.5 font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600 disabled:opacity-50"
           >
             Close
           </button>

@@ -29,7 +29,7 @@ function Contact() {
     <div className="text-richblack-5">
       <section className="mx-auto grid w-11/12 max-w-maxContent gap-12 py-14 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
             Get in touch
           </h1>
           <p className="mt-5 max-w-[440px] leading-relaxed text-richblack-50">
@@ -61,7 +61,7 @@ function Contact() {
         </div>
 
         <div className="rounded-xl border border-richblack-700 bg-richblack-800 p-8 sm:p-10">
-          <h2 className="text-2xl font-extrabold">Send a message</h2>
+          <h2 className="text-2xl font-semibold">Send a message</h2>
           <p className="mt-2 text-sm text-richblack-100">
             You will get a confirmation email once it is sent.
           </p>

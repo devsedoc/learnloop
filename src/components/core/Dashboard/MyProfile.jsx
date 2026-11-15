@@ -21,10 +21,10 @@ export default function MyProfile() {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-3xl font-extrabold text-richblack-5">Profile</h1>
+        <h1 className="text-3xl font-semibold text-richblack-5">Profile</h1>
         <Link
           to="/dashboard/settings"
-          className="rounded-lg border border-richblack-400 px-5 py-2.5 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+          className="rounded-lg border border-richblack-400 px-5 py-2.5 font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
         >
           Edit profile
         </Link>
@@ -37,7 +37,7 @@ export default function MyProfile() {
           className="aspect-square w-16 shrink-0 rounded-full object-cover md:w-20"
         />
         <div className="min-w-0">
-          <p className="text-xl font-bold text-richblack-5">
+          <p className="text-xl font-medium text-richblack-5">
             {user?.firstName} {user?.lastName}
           </p>
           <p className="break-all text-richblack-50">{user?.email}</p>
@@ -45,7 +45,7 @@ export default function MyProfile() {
       </section>
 
       <section className="border-b border-richblack-700 py-8">
-        <h2 className="text-lg font-bold text-richblack-5">About</h2>
+        <h2 className="text-lg font-medium text-richblack-5">About</h2>
         <p
           className={`mt-3 max-w-[620px] leading-relaxed ${
             details.about ? "text-richblack-5" : "text-richblack-100"
@@ -56,7 +56,7 @@ export default function MyProfile() {
       </section>
 
       <section className="py-8">
-        <h2 className="text-lg font-bold text-richblack-5">Personal details</h2>
+        <h2 className="text-lg font-medium text-richblack-5">Personal details</h2>
         <dl className="mt-5 grid max-w-[620px] gap-x-10 gap-y-6 sm:grid-cols-2">
           <Field label="First name" value={user?.firstName} />
           <Field label="Last name" value={user?.lastName} />

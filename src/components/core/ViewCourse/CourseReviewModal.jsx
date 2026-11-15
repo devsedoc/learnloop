@@ -54,13 +54,13 @@ export default function CourseReviewModal({ setReviewModal }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-4 border-b border-richblack-700 py-4 pl-6 pr-3">
-          <h2 id="review-title" className="text-xl font-bold text-richblack-5">
+          <h2 id="review-title" className="text-xl font-medium text-richblack-5">
             Rate {courseEntireData?.courseName}
           </h2>
           <button
             type="button"
             onClick={close}
-            className="rounded-md px-3 py-1.5 font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+            className="rounded-md px-3 py-1.5 font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
           >
             Close
           </button>
@@ -70,7 +70,7 @@ export default function CourseReviewModal({ setReviewModal }) {
           <div className="flex items-center gap-3">
             <img src={user?.image} alt="" className="h-10 w-10 rounded-full object-cover" />
             <p className="text-sm text-richblack-50">
-              Posting as <span className="font-bold text-richblack-5">{user?.firstName} {user?.lastName}</span>.
+              Posting as <span className="font-medium text-richblack-5">{user?.firstName} {user?.lastName}</span>.
               Other students will see your name and review.
             </p>
           </div>

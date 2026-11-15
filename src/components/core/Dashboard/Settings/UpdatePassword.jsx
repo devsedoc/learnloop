@@ -24,7 +24,7 @@ function PasswordField({ id, label, autoComplete, register, rules, error }) {
         <button
           type="button"
           onClick={() => setShow((s) => !s)}
-          className="absolute inset-y-0 right-1 my-1 rounded-md px-3 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+          className="absolute inset-y-0 right-1 my-1 rounded-md px-3 text-sm font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
           aria-label={show ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
         >
           {show ? "Hide" : "Show"}

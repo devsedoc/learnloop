@@ -25,7 +25,7 @@ export default function ForgotPassword() {
         <>
           <p className="mt-3 leading-relaxed text-richblack-50">
             We sent a link to choose a new password to{" "}
-            <span className="font-bold text-richblack-5">{email}</span>. It can take a few
+            <span className="font-medium text-richblack-5">{email}</span>. It can take a few
             minutes, so check your spam folder too.
           </p>
           <form onSubmit={handleOnSubmit} className="mt-6 flex flex-col gap-3">
@@ -35,7 +35,7 @@ export default function ForgotPassword() {
             <button
               type="button"
               onClick={() => setEmailSent(false)}
-              className="rounded-lg px-3 py-2 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
             >
               Use a different email
             </button>

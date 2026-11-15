@@ -23,7 +23,7 @@ export default function ConfirmationModal({ modalData }) {
         className="w-full max-w-[400px] rounded-lg border border-richblack-600 bg-richblack-800 p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <p id="confirm-title" className="text-xl font-bold text-richblack-5">
+        <p id="confirm-title" className="text-xl font-medium text-richblack-5">
           {modalData?.text1}
         </p>
         {modalData?.text2 && (
@@ -34,7 +34,7 @@ export default function ConfirmationModal({ modalData }) {
             <button
               type="button"
               onClick={modalData?.btn1Handler}
-              className="rounded-lg bg-pink-200 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-pink-100 active:bg-pink-300"
+              className="rounded-lg bg-pink-200 px-5 py-2.5 font-medium text-richblack-900 transition-colors duration-150 hover:bg-pink-100 active:bg-pink-300"
             >
               {modalData?.btn1Text}
             </button>

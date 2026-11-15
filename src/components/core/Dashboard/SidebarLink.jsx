@@ -16,7 +16,7 @@ export default function SidebarLink({ link }) {
       onClick={() => dispatch(resetCourseState())}
       className={`whitespace-nowrap rounded-lg px-3 py-2.5 transition-colors duration-150 active:bg-richblack-700 ${
         active
-          ? "bg-richblack-800 font-bold text-yellow-50"
+          ? "bg-richblack-800 font-medium text-yellow-50"
           : "text-richblack-50 hover:bg-richblack-800"
       }`}
     >

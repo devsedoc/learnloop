@@ -6,7 +6,7 @@ import UpdatePassword from "./UpdatePassword"
 export default function Settings() {
   return (
     <div>
-      <h1 className="mb-8 text-3xl font-extrabold text-richblack-5">Settings</h1>
+      <h1 className="mb-8 text-3xl font-semibold text-richblack-5">Settings</h1>
       <ChangeProfilePicture />
       <EditProfile />
       <UpdatePassword />

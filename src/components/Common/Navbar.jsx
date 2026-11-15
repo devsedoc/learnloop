@@ -140,7 +140,7 @@ function Navbar() {
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
               {totalItems > 0 && (
-                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-medium text-yellow-100">
                   {totalItems}
                 </span>
               )}
@@ -148,14 +148,14 @@ function Navbar() {
           )}
           {token === null && (
             <Link to="/login">
-              <button className="rounded-lg px-4 py-2.5 font-bold text-richblack-5 hover:bg-richblack-800">
+              <button className="rounded-lg px-4 py-2.5 font-medium text-richblack-5 hover:bg-richblack-800">
                 Log in
               </button>
             </Link>
           )}
           {token === null && (
             <Link to="/signup">
-              <button className="rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 hover:bg-yellow-25 active:bg-yellow-100">
+              <button className="rounded-lg bg-yellow-50 px-5 py-2.5 font-medium text-richblack-900 hover:bg-yellow-25 active:bg-yellow-100">
                 Sign up
               </button>
             </Link>
@@ -204,13 +204,13 @@ function Navbar() {
               <>
                 <Link
                   to="/login"
-                  className="rounded-lg border border-richblack-400 py-3 text-center font-bold text-richblack-5"
+                  className="rounded-lg border border-richblack-400 py-3 text-center font-medium text-richblack-5"
                 >
                   Log in
                 </Link>
                 <Link
                   to="/signup"
-                  className="rounded-lg bg-yellow-50 py-3 text-center font-bold text-richblack-900"
+                  className="rounded-lg bg-yellow-50 py-3 text-center font-medium text-richblack-900"
                 >
                   Sign up
                 </Link>
@@ -218,7 +218,7 @@ function Navbar() {
             ) : (
               <Link
                 to="/dashboard/my-profile"
-                className="rounded-lg bg-yellow-50 py-3 text-center font-bold text-richblack-900"
+                className="rounded-lg bg-yellow-50 py-3 text-center font-medium text-richblack-900"
               >
                 Dashboard
               </Link>

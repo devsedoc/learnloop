@@ -67,7 +67,7 @@ function SignupForm() {
                 onChange={() => setAccountType(r.type)}
                 className="sr-only"
               />
-              <span className="block font-bold text-richblack-5">{r.title}</span>
+              <span className="block font-medium text-richblack-5">{r.title}</span>
               <span className="mt-0.5 block text-sm text-richblack-50">{r.text}</span>
             </label>
           ))}

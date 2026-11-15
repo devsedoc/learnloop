@@ -32,7 +32,7 @@ export default function RenderTotalAmount() {
   return (
     <div className="w-full rounded-lg border border-richblack-700 bg-richblack-800 p-6 lg:w-[300px] lg:shrink-0">
       <p className="text-sm text-richblack-100">Total</p>
-      <p className="mt-1 text-3xl font-extrabold text-richblack-5">
+      <p className="mt-1 text-3xl font-semibold text-richblack-5">
         ₹{Number(total || 0).toLocaleString("en-IN")}
       </p>
       <IconBtn

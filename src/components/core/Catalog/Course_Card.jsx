@@ -9,7 +9,7 @@ export function RatingLine({ reviews }) {
   if (!count) return <span className="text-richblack-100">No reviews yet</span>
   return (
     <span className="text-richblack-50">
-      <span className="font-bold text-yellow-50">★ {GetAvgRating(reviews).toFixed(1)}</span>{" "}
+      <span className="font-medium text-yellow-50">★ {GetAvgRating(reviews).toFixed(1)}</span>{" "}
       ({count} {count === 1 ? "review" : "reviews"})
     </span>
   )
@@ -27,7 +27,7 @@ export default function Course_Card({ course }) {
         className="aspect-video w-full rounded-lg object-cover"
       />
       <div className="mt-3 space-y-1">
-        <p className="font-bold text-richblack-5 group-hover:underline">
+        <p className="font-medium text-richblack-5 group-hover:underline">
           {course?.courseName}
         </p>
         <p className="text-sm text-richblack-100">
@@ -36,7 +36,7 @@ export default function Course_Card({ course }) {
         <p className="text-sm">
           <RatingLine reviews={course?.ratingAndReviews} />
         </p>
-        <p className="pt-1 font-bold text-richblack-5">{rupees(course?.price)}</p>
+        <p className="pt-1 font-medium text-richblack-5">{rupees(course?.price)}</p>
       </div>
     </Link>
   )

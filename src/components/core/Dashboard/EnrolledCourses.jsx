@@ -26,7 +26,7 @@ export default function EnrolledCourses() {
 
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-richblack-5">Enrolled courses</h1>
+      <h1 className="text-3xl font-semibold text-richblack-5">Enrolled courses</h1>
 
       {courses === null ? (
         <p className="mt-8 text-richblack-50">Loading your courses...</p>
@@ -37,7 +37,7 @@ export default function EnrolledCourses() {
           </p>
           <Link
             to="/"
-            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
           >
             Browse courses
           </Link>
@@ -60,7 +60,7 @@ export default function EnrolledCourses() {
                   className="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="font-bold text-richblack-5">{course.courseName}</p>
+                  <p className="font-medium text-richblack-5">{course.courseName}</p>
                   <p className="mt-1 text-sm text-richblack-100">
                     {course.totalDuration ? `${course.totalDuration} of video` : "No lectures yet"}
                   </p>
@@ -84,7 +84,7 @@ export default function EnrolledCourses() {
                 {path ? (
                   <Link
                     to={path}
-                    className="shrink-0 rounded-lg border border-richblack-400 px-5 py-2.5 text-center font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+                    className="shrink-0 rounded-lg border border-richblack-400 px-5 py-2.5 text-center font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
                   >
                     {action}
                   </Link>

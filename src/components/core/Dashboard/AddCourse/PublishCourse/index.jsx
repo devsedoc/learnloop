@@ -72,7 +72,7 @@ export default function PublishCourse() {
                 className="mt-1 h-4 w-4 accent-yellow-50"
               />
               <span>
-                <span className="block font-bold text-richblack-5">{o.title}</span>
+                <span className="block font-medium text-richblack-5">{o.title}</span>
                 <span className="mt-1 block text-sm text-richblack-50">{o.text}</span>
               </span>
             </label>

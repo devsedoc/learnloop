@@ -45,7 +45,7 @@ export default function DeleteAccount() {
             btn2Handler: () => setConfirmationModal(null),
           })
         }
-        className="mt-5 rounded-lg border border-pink-400 px-5 py-2.5 font-bold text-pink-200 transition-colors duration-150 hover:bg-pink-900 active:bg-pink-800 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-5 rounded-lg border border-pink-400 px-5 py-2.5 font-medium text-pink-200 transition-colors duration-150 hover:bg-pink-900 active:bg-pink-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {deleting ? "Deleting..." : "Delete my account"}
       </button>

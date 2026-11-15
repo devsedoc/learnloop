@@ -59,7 +59,7 @@ export default function VerifyEmail() {
     >
       <p className="mt-3 leading-relaxed text-richblack-50">
         We sent a 6-digit code to{" "}
-        <span className="font-bold text-richblack-5">{signupData.email}</span>. Enter it
+        <span className="font-medium text-richblack-5">{signupData.email}</span>. Enter it
         below to create your account.
       </p>
       <form onSubmit={handleVerifyAndSignup} className="mt-6 flex flex-col gap-5">
@@ -79,7 +79,7 @@ export default function VerifyEmail() {
                 <input
                   {...props}
                   aria-label={`Digit ${i + 1}`}
-                  className="form-style !w-full min-w-0 !p-0 text-center text-xl font-bold"
+                  className="form-style !w-full min-w-0 !p-0 text-center text-xl font-medium"
                   style={{ ...props.style, width: undefined, aspectRatio: "1 / 1" }}
                 />
               )}
@@ -101,7 +101,7 @@ export default function VerifyEmail() {
             type="button"
             onClick={resend}
             disabled={loading}
-            className="font-bold text-yellow-50 hover:underline disabled:opacity-50"
+            className="font-medium text-yellow-50 hover:underline disabled:opacity-50"
           >
             Send a new code
           </button>

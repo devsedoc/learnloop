@@ -42,7 +42,7 @@ const instructorSteps = [
 function StepList({ title, steps }) {
   return (
     <div>
-      <h3 className="text-xl font-bold">{title}</h3>
+      <h3 className="text-xl font-medium">{title}</h3>
       <ol className="mt-5 flex flex-col gap-4">
         {steps.map((step, i) => (
           <li key={step} className="flex gap-4 text-richblack-25">
@@ -78,8 +78,8 @@ function Home() {
       {/* Intro */}
       <section className="border-b border-richblack-700">
         <div className="mx-auto w-11/12 max-w-maxContent py-16 lg:py-20">
-          <h1 className="max-w-[720px] text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Take a video course, or publish one of your own.
+          <h1 className="max-w-[720px] text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Take a video course, or publish one of your own
           </h1>
           <p className="mt-5 max-w-[600px] text-lg leading-relaxed text-richblack-50">
             Learnloop is a course platform. Students buy courses and work
@@ -89,13 +89,13 @@ function Home() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               to="/signup"
-              className="rounded-lg bg-yellow-50 px-6 py-3 text-base font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+              className="rounded-lg bg-yellow-50 px-6 py-3 text-base font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
             >
               Create an account
             </Link>
             <Link
               to="/login"
-              className="rounded-lg border border-richblack-400 px-6 py-3 text-base font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+              className="rounded-lg border border-richblack-400 px-6 py-3 text-base font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
             >
               Log in
             </Link>
@@ -107,7 +107,7 @@ function Home() {
       {topics.length > 0 && (
         <section className="border-b border-richblack-700">
           <div className="mx-auto w-11/12 max-w-maxContent py-12">
-            <h2 className="text-2xl font-extrabold">Courses by topic</h2>
+            <h2 className="text-2xl font-semibold">Courses by topic</h2>
             <ul className="mt-6 flex flex-wrap gap-3">
               {topics.map((topic) => (
                 <li key={topic._id}>
@@ -130,7 +130,7 @@ function Home() {
       {/* How it works */}
       <section className="border-b border-richblack-700">
         <div className="mx-auto w-11/12 max-w-maxContent py-14">
-          <h2 className="text-2xl font-extrabold sm:text-3xl">How it works</h2>
+          <h2 className="text-2xl font-semibold sm:text-3xl">How it works</h2>
           <div className="mt-8 grid gap-10 md:grid-cols-2">
             <StepList title="If you are learning" steps={learnerSteps} />
             <StepList title="If you are teaching" steps={instructorSteps} />
@@ -141,13 +141,13 @@ function Home() {
       {/* What is in the app */}
       <section className="border-b border-richblack-700">
         <div className="mx-auto w-11/12 max-w-maxContent py-14">
-          <h2 className="text-2xl font-extrabold sm:text-3xl">
+          <h2 className="text-2xl font-semibold sm:text-3xl">
             What is in the app
           </h2>
-          <dl className="mt-8 grid gap-x-12 gap-y-7 md:grid-cols-2">
+          <dl className="mt-8 grid gap-x-12 md:grid-cols-2">
             {details.map(({ term, text }) => (
-              <div key={term} className="border-l-2 border-yellow-50 pl-5">
-                <dt className="font-bold">{term}</dt>
+              <div key={term} className="border-t border-richblack-700 py-6">
+                <dt className="font-medium">{term}</dt>
                 <dd className="mt-1 leading-relaxed text-richblack-50">
                   {text}
                 </dd>
@@ -159,7 +159,7 @@ function Home() {
 
       {/* Reviews */}
       <section className="mx-auto w-11/12 max-w-maxContent py-14">
-        <h2 className="text-2xl font-extrabold sm:text-3xl">
+        <h2 className="text-2xl font-semibold sm:text-3xl">
           Reviews from students
         </h2>
         <ReviewSlider />

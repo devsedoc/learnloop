@@ -16,7 +16,7 @@ function Template({ title, description1, description2, formType }) {
           {isSignup ? "Already have an account? " : "New to Learnloop? "}
           <Link
             to={isSignup ? "/login" : "/signup"}
-            className="font-bold text-yellow-50 hover:underline"
+            className="font-medium text-yellow-50 hover:underline"
           >
             {isSignup ? "Log in" : "Create an account"}
           </Link>

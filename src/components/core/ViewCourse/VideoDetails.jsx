@@ -77,7 +77,7 @@ export default function VideoDetails() {
           <BigPlayButton position="center" />
           {videoEnded && (
             <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center gap-3 bg-black/80 p-4 text-center">
-              <p className="text-lg font-bold text-richblack-5">
+              <p className="text-lg font-medium text-richblack-5">
                 {next ? `Up next: ${next.title}` : "That was the last lecture."}
               </p>
               <div className="flex flex-wrap justify-center gap-3">
@@ -103,10 +103,10 @@ export default function VideoDetails() {
           <p className="text-sm text-richblack-100">
             Lecture {index + 1} of {lectures.length}
           </p>
-          <h1 className="mt-1 text-2xl font-extrabold text-richblack-5">{lecture.title}</h1>
+          <h1 className="mt-1 text-2xl font-semibold text-richblack-5">{lecture.title}</h1>
         </div>
         {complete ? (
-          <p className="rounded-lg border border-richblack-700 px-4 py-2.5 text-sm font-bold text-yellow-50">
+          <p className="rounded-lg border border-richblack-700 px-4 py-2.5 text-sm font-medium text-yellow-50">
             ✓ Completed
           </p>
         ) : (

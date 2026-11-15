@@ -76,7 +76,7 @@ export default function Upload({
                 setSelectedFile(null)
                 setValue(name, null)
               }}
-              className="mt-3 rounded-lg border border-richblack-400 px-4 py-2 text-sm font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+              className="mt-3 rounded-lg border border-richblack-400 px-4 py-2 text-sm font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
             >
               Replace {kind}
             </button>
@@ -99,7 +99,7 @@ export default function Upload({
             <button
               type="button"
               onClick={open}
-              className="rounded-lg border border-richblack-400 px-4 py-2 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
+              className="rounded-lg border border-richblack-400 px-4 py-2 font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700"
             >
               Choose a file
             </button>

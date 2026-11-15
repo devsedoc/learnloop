@@ -40,7 +40,7 @@ export default function RequirementsField({ name, label, register, setValue, err
               <span className="text-richblack-5">{item}</span>
               <button
                 type="button"
-                className="rounded-md px-3 py-1.5 text-sm font-bold text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+                className="rounded-md px-3 py-1.5 text-sm font-medium text-richblack-50 transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
                 onClick={() => setList(list.filter((_, i) => i !== index))}
               >
                 Remove
@@ -68,7 +68,7 @@ export default function RequirementsField({ name, label, register, setValue, err
           type="button"
           onClick={add}
           disabled={!requirement.trim()}
-          className="shrink-0 rounded-lg border border-richblack-400 px-5 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="shrink-0 rounded-lg border border-richblack-400 px-5 font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Add
         </button>

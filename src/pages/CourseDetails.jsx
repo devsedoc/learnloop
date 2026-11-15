@@ -67,11 +67,11 @@ export default function CourseDetails() {
     return (
       <>
         <div className="mx-auto w-11/12 max-w-maxContent py-16">
-          <h1 className="text-3xl font-extrabold text-richblack-5">Course not found</h1>
+          <h1 className="text-3xl font-semibold text-richblack-5">Course not found</h1>
           <p className="mt-3 text-richblack-50">
             It may have been removed, or the link is wrong.
           </p>
-          <Link to="/" className="mt-6 inline-block font-bold text-yellow-50 hover:underline">
+          <Link to="/" className="mt-6 inline-block font-medium text-yellow-50 hover:underline">
             Back to the home page
           </Link>
         </div>
@@ -155,7 +155,7 @@ export default function CourseDetails() {
               alt=""
               className="mt-5 aspect-video w-full rounded-lg object-cover lg:hidden"
             />
-            <h1 className="mt-4 text-3xl font-extrabold leading-tight text-richblack-5 sm:text-4xl">
+            <h1 className="mt-4 text-3xl font-semibold leading-tight text-richblack-5 sm:text-4xl">
               {courseName}
             </h1>
             <p className="mt-4 text-lg text-richblack-50">{courseDescription}</p>
@@ -170,7 +170,7 @@ export default function CourseDetails() {
             </ul>
             {instructorName && (
               <p className="mt-3 text-richblack-50">
-                By <span className="font-bold text-richblack-5">{instructorName}</span>
+                By <span className="font-medium text-richblack-5">{instructorName}</span>
               </p>
             )}
           </div>
@@ -188,14 +188,14 @@ export default function CourseDetails() {
         <div className="min-w-0 space-y-12 py-10">
           {whatYouWillLearn && (
             <section>
-              <h2 className="text-2xl font-extrabold text-richblack-5">What you'll learn</h2>
+              <h2 className="text-2xl font-semibold text-richblack-5">What you'll learn</h2>
               <LearnList text={whatYouWillLearn} />
             </section>
           )}
 
           {instructions.length > 0 && (
             <section>
-              <h2 className="text-2xl font-extrabold text-richblack-5">Before you start</h2>
+              <h2 className="text-2xl font-semibold text-richblack-5">Before you start</h2>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-richblack-50">
                 {instructions.map((item, i) => (
                   <li key={i}>{item}</li>
@@ -205,7 +205,7 @@ export default function CourseDetails() {
           )}
 
           <section>
-            <h2 className="text-2xl font-extrabold text-richblack-5">Course content</h2>
+            <h2 className="text-2xl font-semibold text-richblack-5">Course content</h2>
             <p className="mt-2 text-richblack-100">
               {plural(courseContent.length, "section", "sections")} ·{" "}
               {plural(lectures, "lecture", "lectures")}
@@ -215,7 +215,7 @@ export default function CourseDetails() {
               {courseContent.map((section, i) => (
                 <details key={section._id} open={i === 0} className="group">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 hover:bg-richblack-800 [&::-webkit-details-marker]:hidden">
-                    <span className="font-bold text-richblack-5">
+                    <span className="font-medium text-richblack-5">
                       <span
                         aria-hidden
                         className="mr-2 inline-block text-richblack-100 transition-transform duration-150 group-open:rotate-90"
@@ -242,7 +242,7 @@ export default function CourseDetails() {
 
           {instructorName && (
             <section>
-              <h2 className="text-2xl font-extrabold text-richblack-5">Instructor</h2>
+              <h2 className="text-2xl font-semibold text-richblack-5">Instructor</h2>
               <div className="mt-4 flex items-center gap-4">
                 <img
                   src={
@@ -252,7 +252,7 @@ export default function CourseDetails() {
                   alt=""
                   className="h-14 w-14 rounded-full object-cover"
                 />
-                <p className="text-lg font-bold text-richblack-5">{instructorName}</p>
+                <p className="text-lg font-medium text-richblack-5">{instructorName}</p>
               </div>
               {instructor?.additionalDetails?.about && (
                 <p className="mt-4 text-richblack-50">{instructor.additionalDetails.about}</p>

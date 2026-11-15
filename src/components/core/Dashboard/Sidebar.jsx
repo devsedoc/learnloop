@@ -22,7 +22,7 @@ export default function Sidebar() {
       {/* Phones: a scrollable row of tabs. Desktop: a left column. */}
       <aside className="border-b border-richblack-700 bg-richblack-900 md:h-[calc(100vh-4rem)] md:w-[240px] md:shrink-0 md:border-b-0 md:border-r">
         <div className="hidden px-6 pb-4 pt-8 md:block">
-          <p className="truncate font-bold text-richblack-5">
+          <p className="truncate font-medium text-richblack-5">
             {user?.firstName} {user?.lastName}
           </p>
           <p className="text-sm text-richblack-100">{user?.accountType}</p>

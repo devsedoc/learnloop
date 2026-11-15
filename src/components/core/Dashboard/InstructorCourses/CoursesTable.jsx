@@ -51,7 +51,7 @@ export default function CoursesTable({ courses, setCourses }) {
         </p>
         <Link
           to="/dashboard/add-course"
-          className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+          className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
         >
           Create your first course
         </Link>
@@ -91,7 +91,7 @@ export default function CoursesTable({ courses, setCourses }) {
                       className="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
                     />
                     <div className="min-w-0">
-                      <p className="font-bold text-richblack-5">{course.courseName}</p>
+                      <p className="font-medium text-richblack-5">{course.courseName}</p>
                       <p className="mt-1 line-clamp-2 text-sm text-richblack-100">
                         {course.courseDescription}
                       </p>
@@ -125,7 +125,7 @@ export default function CoursesTable({ courses, setCourses }) {
                       type="button"
                       disabled={!!deletingId}
                       onClick={() => navigate(`/dashboard/edit-course/${course._id}`)}
-                      className="rounded-lg px-3 py-2 font-bold text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="rounded-lg px-3 py-2 font-medium text-richblack-5 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Edit
                     </button>
@@ -133,7 +133,7 @@ export default function CoursesTable({ courses, setCourses }) {
                       type="button"
                       disabled={!!deletingId}
                       onClick={() => askToDelete(course)}
-                      className="rounded-lg px-3 py-2 font-bold text-pink-200 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="rounded-lg px-3 py-2 font-medium text-pink-200 transition-colors duration-150 hover:bg-richblack-800 active:bg-richblack-700 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isDeleting ? "Deleting..." : "Delete"}
                     </button>

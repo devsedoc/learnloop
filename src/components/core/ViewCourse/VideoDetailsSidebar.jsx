@@ -16,11 +16,11 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
       <div className="border-b border-richblack-700 p-5">
         <Link
           to="/dashboard/enrolled-courses"
-          className="text-sm font-bold text-richblack-50 hover:text-richblack-5 hover:underline"
+          className="text-sm font-medium text-richblack-50 hover:text-richblack-5 hover:underline"
         >
           ← My courses
         </Link>
-        <p className="mt-3 font-bold text-richblack-5">{courseEntireData?.courseName}</p>
+        <p className="mt-3 font-medium text-richblack-5">{courseEntireData?.courseName}</p>
         <div className="mt-3 flex items-center gap-3">
           <div
             className="h-2 flex-1 overflow-hidden rounded-full bg-richblack-700"
@@ -52,7 +52,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
             open={section._id === sectionId}
             className="group border-b border-richblack-800"
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3 text-sm font-bold text-richblack-5 hover:bg-richblack-800 [&::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3 text-sm font-medium text-richblack-5 hover:bg-richblack-800 [&::-webkit-details-marker]:hidden">
               <span>{section.sectionName}</span>
               <span
                 aria-hidden
@@ -72,7 +72,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                       aria-current={current ? "page" : undefined}
                       className={`flex items-start gap-3 py-2 pl-5 pr-4 text-sm transition-colors duration-150 ${
                         current
-                          ? "bg-richblack-800 font-bold text-yellow-50"
+                          ? "bg-richblack-800 font-medium text-yellow-50"
                           : "text-richblack-50 hover:bg-richblack-800 hover:text-richblack-5"
                       }`}
                     >

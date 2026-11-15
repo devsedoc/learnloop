@@ -9,7 +9,6 @@ const rupees = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`
 
 export default function Instructor() {
   const { token } = useSelector((state) => state.auth)
-  const { user } = useSelector((state) => state.profile)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState([])
   const [courses, setCourses] = useState([])
@@ -33,7 +32,7 @@ export default function Instructor() {
 
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-richblack-5">
+      <h1 className="text-3xl font-semibold text-richblack-5">
         Dashboard
       </h1>
 
@@ -46,7 +45,7 @@ export default function Instructor() {
           </p>
           <Link
             to="/dashboard/add-course"
-            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-bold text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
+            className="mt-5 inline-block rounded-lg bg-yellow-50 px-5 py-2.5 font-medium text-richblack-900 transition-colors duration-150 hover:bg-yellow-25 active:bg-yellow-100"
           >
             Create your first course
           </Link>
@@ -65,7 +64,7 @@ export default function Instructor() {
                 className={`py-5 ${i > 0 ? "border-l border-richblack-700 pl-5" : ""}`}
               >
                 <dt className="text-sm text-richblack-100">{label}</dt>
-                <dd className="mt-1 text-2xl font-extrabold text-richblack-5 sm:text-3xl">
+                <dd className="mt-1 text-2xl font-semibold text-richblack-5 sm:text-3xl">
                   {value}
                 </dd>
               </div>
@@ -74,10 +73,10 @@ export default function Instructor() {
 
           {/* Per-course breakdown */}
           <div className="mt-10 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-richblack-5">By course</h2>
+            <h2 className="text-lg font-medium text-richblack-5">By course</h2>
             <Link
               to="/dashboard/my-courses"
-              className="font-bold text-yellow-50 hover:underline"
+              className="font-medium text-yellow-50 hover:underline"
             >
               Manage courses
             </Link>

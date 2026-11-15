@@ -64,7 +64,7 @@ function Footer() {
 
         {columns.map((column) => (
           <div key={column.heading}>
-            <p className="text-sm font-bold text-richblack-100">
+            <p className="text-sm font-medium text-richblack-100">
               {column.heading}
             </p>
             <ul className="mt-4 flex flex-col gap-3">

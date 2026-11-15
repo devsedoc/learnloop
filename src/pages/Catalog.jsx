@@ -58,7 +58,7 @@ export default function Catalog() {
     return (
       <>
         <div className="mx-auto w-11/12 max-w-maxContent py-16">
-          <h1 className="text-3xl font-extrabold text-richblack-5">
+          <h1 className="text-3xl font-semibold text-richblack-5">
             {page === "not-found" ? "No such topic" : "Courses couldn't be loaded"}
           </h1>
           <p className="mt-3 text-richblack-50">
@@ -66,7 +66,7 @@ export default function Catalog() {
               ? "This topic doesn't exist, or it has been renamed."
               : "Check your connection and refresh the page."}
           </p>
-          <Link to="/" className="mt-6 inline-block font-bold text-yellow-50 hover:underline">
+          <Link to="/" className="mt-6 inline-block font-medium text-yellow-50 hover:underline">
             Back to the home page
           </Link>
         </div>
@@ -90,7 +90,7 @@ export default function Catalog() {
             </Link>{" "}
             / <span className="text-richblack-5">{selectedCategory?.name}</span>
           </nav>
-          <h1 className="mt-3 text-3xl font-extrabold text-richblack-5 sm:text-4xl">
+          <h1 className="mt-3 text-3xl font-semibold text-richblack-5 sm:text-4xl">
             {selectedCategory?.name}
           </h1>
           {selectedCategory?.description && (
@@ -102,7 +102,7 @@ export default function Catalog() {
       </section>
 
       <section className="mx-auto w-11/12 max-w-maxContent py-12">
-        <h2 className="text-2xl font-extrabold text-richblack-5">
+        <h2 className="text-2xl font-semibold text-richblack-5">
           {courses.length} {courses.length === 1 ? "course" : "courses"}
         </h2>
         {courses.length ? (
@@ -117,13 +117,13 @@ export default function Catalog() {
       {others.length > 0 && (
         <section className="border-t border-richblack-700">
           <div className="mx-auto w-11/12 max-w-maxContent py-12">
-            <h2 className="text-2xl font-extrabold text-richblack-5">
+            <h2 className="text-2xl font-semibold text-richblack-5">
               Also on Learnloop: {differentCategory.name}
             </h2>
             <CourseGrid courses={others.slice(0, 3)} />
             <Link
               to={`/catalog/${slug(differentCategory.name)}`}
-              className="mt-8 inline-block font-bold text-yellow-50 hover:underline"
+              className="mt-8 inline-block font-medium text-yellow-50 hover:underline"
             >
               See all {differentCategory.name} courses
             </Link>
@@ -134,7 +134,7 @@ export default function Catalog() {
       {bestSellers.length > 0 && (
         <section className="border-t border-richblack-700">
           <div className="mx-auto w-11/12 max-w-maxContent py-12">
-            <h2 className="text-2xl font-extrabold text-richblack-5">
+            <h2 className="text-2xl font-semibold text-richblack-5">
               Most enrolled across all topics
             </h2>
             <CourseGrid courses={bestSellers} />

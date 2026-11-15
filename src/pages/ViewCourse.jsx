@@ -47,7 +47,7 @@ export default function ViewCourse() {
           <p className="text-richblack-50">Loading the course...</p>
         ) : (
           <>
-            <h1 className="text-3xl font-extrabold text-richblack-5">
+            <h1 className="text-3xl font-semibold text-richblack-5">
               This course couldn't be opened
             </h1>
             <p className="mt-3 text-richblack-50">
@@ -55,7 +55,7 @@ export default function ViewCourse() {
             </p>
             <Link
               to="/dashboard/enrolled-courses"
-              className="mt-6 inline-block font-bold text-yellow-50 hover:underline"
+              className="mt-6 inline-block font-medium text-yellow-50 hover:underline"
             >
               Back to your courses
             </Link>

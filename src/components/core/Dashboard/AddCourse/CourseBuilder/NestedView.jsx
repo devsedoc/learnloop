@@ -10,7 +10,7 @@ import ConfirmationModal from "../../../../Common/ConfirmationModal"
 import SubSectionModal from "./SubSectionModal"
 
 const smallBtn =
-  "rounded-md px-3 py-1.5 text-sm font-bold transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
+  "rounded-md px-3 py-1.5 text-sm font-medium transition-colors duration-150 hover:bg-richblack-700 active:bg-richblack-600"
 
 export default function NestedView({ handleChangeEditSectionName }) {
   const { course } = useSelector((state) => state.course)
@@ -44,7 +44,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
         {course?.courseContent?.map((section, i) => (
           <li key={section._id} className="rounded-lg border border-richblack-700">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-richblack-700 py-3 pl-5 pr-3">
-              <p className="font-bold text-richblack-5">
+              <p className="font-medium text-richblack-5">
                 <span className="text-richblack-100">Section {i + 1}:</span>{" "}
                 {section.sectionName}
               </p>
