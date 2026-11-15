@@ -30,6 +30,7 @@ app.use(cookieParser());
 // Extra origins can be added on Render via CORS_ORIGINS (comma-separated, no trailing slash)
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://learnloop-devsedoc.vercel.app",
   "https://studynotion-eduplat.vercel.app",
   ...(process.env.CORS_ORIGINS || "")
     .split(",")
