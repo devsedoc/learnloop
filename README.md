@@ -3,7 +3,7 @@
 
 A course platform where students buy and take video courses, and instructors build, publish and track their own.
 
-**Live site:** [https://studynotion-eduplat.vercel.app](https://studynotion-eduplat.vercel.app)
+**Live site:** [https://learnloop-devsedoc.vercel.app](https://learnloop-devsedoc.vercel.app)
 
 **Built with React, Node.js, Express, and MongoDB.**
 
