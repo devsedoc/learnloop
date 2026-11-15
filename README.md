@@ -1,15 +1,19 @@
 
-# StudyNotion — EdTech Platform
+# Learnloop
 
-A full-stack educational platform designed to connect students and instructors through online courses, learning resources, and course management tools.
+A course platform where students buy and take video courses, and instructors build, publish and track their own.
 
 **Built with React, Node.js, Express, and MongoDB.**
 
 ## Overview
 
-StudyNotion is a web-based learning platform with separate experiences for students and instructors. Students can explore courses and manage their learning, while instructors can create and manage course content.
+Learnloop is a web-based learning platform with separate experiences for students and instructors. Students can explore courses and manage their learning, while instructors can create and manage course content.
 
 This project uses a React frontend and an Express backend connected to MongoDB.
+
+## Background
+
+This project started from a MERN course. I then redesigned every page (new UI, responsive course player, settings, course editor and auth screens), fixed bugs I found along the way, and fixed the catalogue API.
 
 ## Features
 
@@ -20,7 +24,7 @@ This project uses a React frontend and an Express backend connected to MongoDB.
 - **Course content:** Organize courses into sections and subsections.
 - **Media uploads:** Cloudinary integration for supported media uploads.
 - **Email notifications:** Email verification and account-related notifications.
-- **Reviews and ratings:** Course feedback functionality.
+- **Reviews and ratings:** Students rate courses and leave a review.
 - **Responsive interface:** React-based user interface styled with Tailwind CSS.
 
 > Payment integration is currently disabled unless valid Razorpay credentials are configured.
